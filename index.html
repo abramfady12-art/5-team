@@ -4,54 +4,66 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>فرح أخوك الـ5٪ 🔋 Secret Santa</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Lalezar&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0f2a24;--card:#17392f;--ink:#fdf6e3;--red:#d62839;--gold:#f2c14e;--mut:#9db8ad}
+:root{--gold:#f4c95d;--ink:#fdf6e3;--mut:#a9c4ba}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,#1f5143,var(--bg));color:var(--ink);font-family:Cairo,system-ui,sans-serif;display:flex;justify-content:center;padding:64px 16px 140px;overflow-x:hidden}
+body{margin:0;min-height:100vh;color:var(--ink);font-family:Cairo,system-ui,sans-serif;display:flex;justify-content:center;padding:70px 16px 150px;overflow-x:hidden;background:#06121c}
+body::before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(60% 50% at 20% 10%,#14634f88,#0000),radial-gradient(50% 40% at 85% 25%,#5b2a8c55,#0000),radial-gradient(70% 60% at 50% 110%,#0c3b30,#0000),linear-gradient(#06121c,#0a2230);animation:aur 18s ease-in-out infinite alternate}
+@keyframes aur{to{filter:hue-rotate(25deg) brightness(1.2)}}
 main{width:100%;max-width:460px;position:relative;z-index:1}
-h1{font-size:2rem;font-weight:900;text-align:center;margin:8px 0 4px}
-.sub{text-align:center;color:var(--mut);margin:0 0 24px}
-.card{background:var(--card);border:2px dashed var(--gold);border-radius:20px;padding:20px;margin-bottom:16px}
-label{display:block;margin:10px 0 8px;font-weight:700}
-select,textarea{width:100%;padding:12px;border-radius:12px;border:0;font:inherit;background:#fdf6e3;color:#222}
+h1{font-family:Lalezar,Cairo,sans-serif;font-weight:400;font-size:2.7rem;line-height:1.2;text-align:center;margin:6px 0 2px;background:linear-gradient(100deg,#fff1b8,#f4c95d 35%,#c98a1b 55%,#ffe9a0 75%,#f4c95d);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite;filter:drop-shadow(0 4px 14px #f4c95d44)}
+@keyframes shine{to{background-position:200% center}}
+.sub{text-align:center;color:var(--mut);margin:0 0 26px;font-size:.98rem}
+.card{position:relative;background:linear-gradient(160deg,#ffffff1c,#ffffff08);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid #f4c95d55;border-radius:28px;padding:22px;margin-bottom:18px;box-shadow:0 20px 50px #0008,inset 0 1px 0 #ffffff33,0 0 40px #f4c95d1a}
+.card::before{content:"";position:absolute;top:0;left:12%;right:12%;height:2px;background:linear-gradient(90deg,#0000,var(--gold),#0000)}
+label{display:block;margin:12px 0 8px;font-weight:700}
+select,textarea{width:100%;padding:14px 16px;border-radius:14px;border:1px solid #f4c95d66;font:inherit;background:#06121ccc;color:var(--ink)}
+select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,#0000 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,#0000 50%);background-position:18px 52%,24px 52%;background-size:6px 6px;background-repeat:no-repeat}
+option{background:#0a2230}
 textarea{min-height:100px}
-button{font:inherit;font-weight:700;border:0;border-radius:12px;padding:12px 18px;cursor:pointer;background:var(--red);color:#fff;width:100%;margin-top:12px}
-button.alt{background:transparent;color:var(--mut);border:1px solid var(--mut);width:auto;font-size:.85rem}
-button:disabled{opacity:.5;cursor:not-allowed}
+button{font:inherit;font-weight:900;font-size:1.05rem;border:1px solid #ffd77a;border-radius:16px;padding:14px 18px;cursor:pointer;background:linear-gradient(180deg,#ef4b5b,#b3131f);color:#fff;width:100%;margin-top:14px;box-shadow:0 8px 24px #d6283966,inset 0 1px 0 #ffffff55;transition:transform .15s,box-shadow .15s}
+button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 30px #d6283988}
+button.alt{background:#ffffff0d;color:var(--mut);border:1px solid #ffffff33;width:auto;font-size:.85rem;box-shadow:none;font-weight:700}
+button:disabled{opacity:.45;cursor:not-allowed}
 :focus-visible{outline:3px solid var(--gold)}
-#wheel{margin-top:16px;min-height:96px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:900;text-align:center;color:var(--gold);border-radius:16px;background:#0f2a24}
-#wheel.spin{animation:pulse .25s infinite alternate}
-#wheel.win{background:var(--gold);color:#222;font-size:2.2rem}
+#wheel{margin-top:18px;min-height:110px;display:flex;align-items:center;justify-content:center;font-family:Lalezar,Cairo,sans-serif;font-size:2rem;text-align:center;color:var(--gold);border-radius:20px;padding:10px;background:radial-gradient(circle at 50% 0,#14634f66,#06121c);border:1px solid #f4c95d44;box-shadow:inset 0 0 30px #0008}
+#wheel.spin{animation:pulse .25s infinite alternate;box-shadow:0 0 30px #f4c95d66,inset 0 0 30px #0008}
+#wheel.win{background:linear-gradient(120deg,#fff1b8,#f4c95d,#c98a1b,#ffe9a0);background-size:200% auto;animation:pop .6s,shine 3s linear infinite;color:#2a1a00;font-size:2.4rem;box-shadow:0 0 50px #f4c95dbb}
 @keyframes pulse{to{transform:scale(1.04)}}
-@media(prefers-reduced-motion:reduce){#wheel.spin{animation:none}}
-.msg{margin-top:10px;color:var(--gold);min-height:1.4em;text-align:center}
-.tag{display:inline-block;margin:4px;padding:4px 10px;border-radius:99px;background:#0f2a24;font-size:.9rem}
-.tag.ok{background:var(--gold);color:#222}
-.credit{text-align:center;color:var(--mut);font-size:.8rem;margin-top:24px;direction:ltr}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+.msg{margin-top:12px;color:var(--gold);min-height:1.4em;text-align:center;font-weight:700}
+.tag{display:inline-block;margin:4px;padding:5px 12px;border-radius:99px;background:#ffffff14;border:1px solid #ffffff22;font-size:.88rem}
+.tag.ok{background:linear-gradient(120deg,#f4c95d,#c98a1b);color:#2a1a00;border-color:#ffe9a0}
+.credit{text-align:center;color:var(--gold);opacity:.8;font-size:.8rem;margin-top:26px;direction:ltr;letter-spacing:.3px}
 .snow{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
-.snow i{position:absolute;top:-40px;font-style:normal;color:#fff;opacity:.85;animation:fall linear forwards}
+.snow i{position:absolute;top:-40px;font-style:normal;color:#fff;text-shadow:0 0 6px #fff;opacity:.85;animation:fall linear forwards}
 @keyframes fall{to{transform:translate(var(--x),110vh) rotate(360deg)}}
+.stars i{position:fixed;width:2px;height:2px;border-radius:50%;background:#fff;box-shadow:0 0 6px #fff;z-index:-1;animation:tw 2s infinite alternate}
 .lights{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-around;z-index:5;pointer-events:none;border-top:3px solid #2b1d14}
 .lights i{width:9px;height:14px;border-radius:50%;background:var(--c);box-shadow:0 0 12px var(--c);animation:tw 1s infinite alternate}
 .lights i:nth-child(3n){--c:#ff4d4d}.lights i:nth-child(3n+1){--c:#ffd23f}.lights i:nth-child(3n+2){--c:#4dd2ff;animation-delay:.5s}
 @keyframes tw{to{opacity:.3}}
-.sleigh{position:fixed;top:34px;left:-260px;font-size:1.8rem;direction:ltr;white-space:nowrap;z-index:3;pointer-events:none;animation:fly 18s linear infinite}
+.orn{position:fixed;top:0;z-index:4;pointer-events:none;transform-origin:50% 0;animation:swing 3s ease-in-out infinite alternate}
+.orn::before{content:"";display:block;width:1px;height:var(--h);background:#f4c95d99;margin:0 auto}
+.orn::after{content:"";display:block;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff9,#0000 35%),var(--c);box-shadow:0 6px 14px #0008,inset -4px -6px 8px #0005}
+@keyframes swing{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+.sleigh{position:fixed;top:34px;left:-260px;font-size:1.8rem;direction:ltr;white-space:nowrap;z-index:3;pointer-events:none;filter:drop-shadow(0 0 8px #f4c95d99);animation:fly 18s linear infinite}
 @keyframes fly{to{transform:translateX(calc(100vw + 300px))}}
-.ground{position:fixed;bottom:0;left:0;right:0;height:56px;z-index:2;pointer-events:none;background:#fdfdff;border-radius:60% 60% 0 0/30px 30px 0 0}
-.ground b{position:absolute;top:-34px;left:0;right:0;display:flex;justify-content:space-around;font-size:2.2rem;font-weight:400;direction:ltr}
-.hero{text-align:center;font-size:2.4rem;direction:ltr}
-.hero span:nth-child(2){display:inline-block;font-size:3.6rem;animation:wig 2s ease-in-out infinite}
+.ground{position:fixed;bottom:0;left:-5%;right:-5%;height:64px;z-index:2;pointer-events:none;background:linear-gradient(#fff,#cfe0f2);border-radius:50% 50% 0 0/40px 40px 0 0;box-shadow:0 -6px 30px #ffffff44}
+.ground b{position:absolute;top:-36px;left:5%;right:5%;display:flex;justify-content:space-around;font-size:2.2rem;font-weight:400;direction:ltr}
+.hero{text-align:center;font-size:2.2rem;direction:ltr;position:relative}
+.hero::before{content:"";position:absolute;left:50%;top:50%;width:240px;height:240px;transform:translate(-50%,-50%);background:radial-gradient(#f4c95d44,#0000 65%);z-index:-1}
+.hero span{display:inline-block;filter:drop-shadow(0 6px 10px #0008)}
+.hero span:nth-child(2){font-size:4.2rem;margin:0 6px;animation:wig 2.4s ease-in-out infinite}
 @keyframes wig{50%{transform:rotate(-8deg) scale(1.08)}}
-h1{text-shadow:0 0 18px #f2c14e66}
-.card{box-shadow:0 0 28px #f2c14e22}
-#wheel.win{box-shadow:0 0 30px var(--gold)}
-@media(prefers-reduced-motion:reduce){.sleigh,.lights i,.hero span{animation:none}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
 [hidden]{display:none!important}
 </style>
 </head>
 <body>
 <div class="snow" id="snow"></div>
+<div class="stars" id="stars"></div>
 <div class="lights" id="lights"></div>
 <div class="sleigh">🎅🛷🦌🦌🦌</div>
 <div class="ground"><b><span>🎄</span><span>⛄</span><span>🎁</span><span>🎄</span><span>🎅</span><span>🎁</span><span>⛄</span><span>🎄</span></b></div>
@@ -101,6 +113,13 @@ const db = getDatabase(initializeApp(firebaseConfig));
 const root = ref(db, "santa");
 const $ = id => document.getElementById(id);
 $("lights").innerHTML = "<i></i>".repeat(18);
+$("stars").innerHTML = Array.from({length: 60}, () => `<i style="left:${Math.random() * 100}%;top:${Math.random() * 70}%;animation-delay:${Math.random() * 2}s"></i>`).join("");
+[["3%","#d62839",70,0],["11%","#f4c95d",40,.6],["88%","#2ec4b6",50,.3],["96%","#9b5de5",85,.9]].forEach(([l, c, h, d]) => {
+  const e = document.createElement("div");
+  e.className = "orn";
+  e.style.cssText = `left:${l};--c:${c};--h:${h}px;animation-delay:${d}s`;
+  document.body.appendChild(e);
+});
 const flake = (ch = "❄") => {
   const e = document.createElement("i");
   e.textContent = ch;
