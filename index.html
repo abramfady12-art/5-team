@@ -15,6 +15,7 @@ main{width:100%;max-width:460px;position:relative;z-index:1}
 h1{font-family:Lalezar,Cairo,sans-serif;font-weight:400;font-size:2.7rem;line-height:1.2;text-align:center;margin:6px 0 2px;background:linear-gradient(100deg,#fff1b8,#f4c95d 35%,#c98a1b 55%,#ffe9a0 75%,#f4c95d);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite;filter:drop-shadow(0 4px 14px #f4c95d44)}
 @keyframes shine{to{background-position:200% center}}
 .sub{text-align:center;color:var(--mut);margin:0 0 26px;font-size:.98rem}
+.net{margin:0 0 16px;padding:10px 14px;border-radius:14px;background:#b3131f55;border:1px solid #ef4b5b;text-align:center;font-weight:700;font-size:.9rem;white-space:pre-line;word-break:break-word}
 .card{position:relative;background:linear-gradient(160deg,#ffffff1c,#ffffff08);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid #f4c95d55;border-radius:28px;padding:22px;margin-bottom:18px;box-shadow:0 20px 50px #0008,inset 0 1px 0 #ffffff33,0 0 40px #f4c95d1a}
 .card::before{content:"";position:absolute;top:0;left:12%;right:12%;height:2px;background:linear-gradient(90deg,#0000,var(--gold),#0000)}
 label{display:block;margin:12px 0 8px;font-weight:700}
@@ -80,6 +81,7 @@ button:disabled{opacity:.45;cursor:not-allowed}
   <div class="hero"><span>🎄</span><span>🎅</span><span>🎄</span></div>
   <h1>🔋 فرح أخوك الـ5٪</h1>
   <p class="sub">Secret Santa 🎄 الفرحة لسه 5٪.. لف الرول عشان توصل 100٪</p>
+  <div class="net" id="net" hidden></div>
 
   <section class="card" id="login">
     <label for="code" style="margin-top:0">اكتب الكود السري اللي اتبعتلك 🔑</label>
@@ -120,8 +122,26 @@ button:disabled{opacity:.45;cursor:not-allowed}
   </section>
 </main>
 
-<script>const $ = id => document.getElementById(id);
+<!-- سكريبت واحد عادي (مش module): الأزرار شغالة حتى لو Firebase ماتحملش -->
+<script>
+// ====== عدّل هنا ======
+const firebaseConfig = {
+  apiKey: "AIzaSyC9-9B4h1PYPzdOhZRjCor9ZeXsAm1_JL8",
+  authDomain: "secret-santa-8c4fa.firebaseapp.com",
+  databaseURL: "https://secret-santa-8c4fa-default-rtdb.firebaseio.com",
+  projectId: "secret-santa-8c4fa",
+  appId: "1:218179764126:web:4abbe5b9a7c62fbfe8608f"
+};
+const ADMIN_PASS = "1234";
+// ======================
+
+const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const setNet = m => { const n = $("net"); n.textContent = m || ""; n.hidden = !m; };
+addEventListener("error", e => setNet("⚠️ خطأ في الصفحة: " + (e.message || "")));
+addEventListener("unhandledrejection", e => setNet("⚠️ خطأ: " + ((e.reason && e.reason.message) || e.reason)));
+
+// ====== الزينة ======
 $("lights").innerHTML = "<i></i>".repeat(18);
 $("stars").innerHTML = Array.from({length: 60}, () => `<i style="left:${Math.random() * 100}%;top:${Math.random() * 70}%;animation-delay:${Math.random() * 2}s"></i>`).join("");
 [["3%","#d62839",70,0],["11%","#f4c95d",40,.6],["88%","#2ec4b6",50,.3],["96%","#9b5de5",85,.9]].forEach(([l, c, h, d]) => {
@@ -156,7 +176,8 @@ const party = () => { if (!calm) ["🎉","✨","🎁","⭐","🎄"].forEach((c, 
   };
   if (!calm) setTimeout(go, 100 + k * 500);
 });
-// موسيقى Jingle Bells (لحن قديم متاح للجميع) بتتولد من المتصفح مباشرة
+
+// ====== الموسيقى (Jingle Bells، لحن قديم متاح للجميع) ======
 const mus = $("music"), HZ = {C: 261.63, D: 293.66, E: 329.63, F: 349.23, G: 392};
 const tune = "E1 E1 E2 E1 E1 E2 E1 G1 C1.5 D.5 E4 F1 F1 F1.5 F.5 F1 E1 E1 E.5 E.5 E1 D1 D1 E1 D2 G2".split(" ");
 let ac, on = false, loopT;
@@ -187,33 +208,56 @@ const toggle = () => {
 mus.onclick = toggle;
 addEventListener("pointerdown", e => { if (!on && !e.target.closest("#music")) toggle(); }, {once: true});
 
-
-$("adminBtn").onclick = () => { $("agate").hidden = !$("agate").hidden; if (!$("agate").hidden) $("apass").focus(); };
-</script>
-<script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {getDatabase, ref, onValue, set, runTransaction} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-// ====== عدّل هنا ======
-const firebaseConfig = {
-  apiKey: "AIzaSyC9-9B4h1PYPzdOhZRjCor9ZeXsAm1_JL8",
-  authDomain: "secret-santa-8c4fa.firebaseapp.com",
-  databaseURL: "https://secret-santa-8c4fa-default-rtdb.firebaseio.com",
-  projectId: "secret-santa-8c4fa",
-  appId: "1:218179764126:web:4abbe5b9a7c62fbfe8608f"
-};
-const ADMIN_PASS = "1234";
-// ======================
-
-window.__santaReady = true;
-const db = getDatabase(initializeApp(firebaseConfig));
-const root = ref(db, "santa");
-let data = {}, busy = false, loaded = false;
+// ====== الحالة ======
+let data = {}, busy = false, ready = false, failed = false, FB = null, db = null, root = null;
 const urlCode = new URLSearchParams(location.search).get("c");
 if (urlCode) $("code").value = urlCode;
+const getSession = () => { try { return JSON.parse(localStorage.getItem("santa_me") || "null"); } catch { return null; } };
+const getCodes = () => { try { return JSON.parse(localStorage.getItem("santa_codes") || "null"); } catch { return null; } };
+const noNet = () => failed ? "مفيش اتصال بالسيرفر دلوقتي ⚠️ (شوف الرسالة الحمرا فوق)" : "لسه بتّصل بالسيرفر.. جرب تاني بعد ثانية ⏳";
 
 // ====== الأكواد ======
-const sha = async t => [...new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)))].map(b => b.toString(16).padStart(2, "0")).join("");
+// SHA-256: بنستخدم المتصفح لو متاح، وإلا نسخة JS (عشان crypto.subtle مش بتشتغل على http)
+function sha256js(msg) {
+  const rr = (x, n) => (x >>> n) | (x << (32 - n));
+  const primes = []; for (let c = 2; primes.length < 64; c++) if (primes.every(p => c % p)) primes.push(c);
+  const frac = x => Math.floor((x - Math.floor(x)) * 4294967296);
+  const K = primes.map(p => frac(Math.cbrt(p)));
+  let H = primes.slice(0, 8).map(p => frac(Math.sqrt(p)));
+  const bytes = Array.from(new TextEncoder().encode(msg));
+  const bitLen = bytes.length * 8;
+  bytes.push(0x80);
+  while (bytes.length % 64 !== 56) bytes.push(0);
+  for (let i = 7; i >= 0; i--) bytes.push(i >= 4 ? 0 : (bitLen >>> (i * 8)) & 255);
+  for (let o = 0; o < bytes.length; o += 64) {
+    const w = new Array(64);
+    for (let i = 0; i < 16; i++) w[i] = (bytes[o + 4 * i] << 24 | bytes[o + 4 * i + 1] << 16 | bytes[o + 4 * i + 2] << 8 | bytes[o + 4 * i + 3]) | 0;
+    for (let i = 16; i < 64; i++) {
+      const s0 = rr(w[i - 15], 7) ^ rr(w[i - 15], 18) ^ (w[i - 15] >>> 3);
+      const s1 = rr(w[i - 2], 17) ^ rr(w[i - 2], 19) ^ (w[i - 2] >>> 10);
+      w[i] = (w[i - 16] + s0 + w[i - 7] + s1) | 0;
+    }
+    let [a, b, c, d, e, f, g, h] = H;
+    for (let i = 0; i < 64; i++) {
+      const S1 = rr(e, 6) ^ rr(e, 11) ^ rr(e, 25);
+      const t1 = (h + S1 + ((e & f) ^ (~e & g)) + K[i] + w[i]) | 0;
+      const S0 = rr(a, 2) ^ rr(a, 13) ^ rr(a, 22);
+      const t2 = (S0 + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+      h = g; g = f; f = e; e = (d + t1) | 0; d = c; c = b; b = a; a = (t1 + t2) | 0;
+    }
+    H = H.map((v, i) => (v + [a, b, c, d, e, f, g, h][i]) | 0);
+  }
+  return H.map(v => (v >>> 0).toString(16).padStart(8, "0")).join("");
+}
+const sha = async t => {
+  try {
+    if (window.crypto && crypto.subtle) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t));
+      return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
+    }
+  } catch {}
+  return sha256js(t);
+};
 const ALPHA = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
 const genCode = () => Array.from(crypto.getRandomValues(new Uint8Array(6)), b => ALPHA[b % ALPHA.length]).join("");
 async function makeCodes(names) {
@@ -224,8 +268,6 @@ async function makeCodes(names) {
   }
   return {codes, h};
 }
-const getSession = () => { try { return JSON.parse(localStorage.getItem("santa_me") || "null"); } catch { return null; } };
-const getCodes = () => { try { return JSON.parse(localStorage.getItem("santa_codes") || "null"); } catch { return null; } };
 
 // الولد ياخد بنت بس، والبنت ياخد أي حد غير نفسها
 const allowed = (u, v, g) => u !== v && (g[u] !== "b" || g[v] === "g");
@@ -243,23 +285,28 @@ const matchable = (givers, recv, g) => {
   return givers.every(u => go(u, {}));
 };
 
+// ====== الدخول بالكود ======
 async function login(raw) {
   const code = (raw || "").trim().toUpperCase();
   if (!code) return;
   $("lmsg").textContent = "";
-  const h = await sha(code), hs = data.h || {};
-  const me = (data.names || []).find(n => hs[n] === h);
-  if (!me) { $("lmsg").textContent = "الكود غلط ❌ اتأكد منه وجرب تاني."; return; }
-  localStorage.setItem("santa_me", JSON.stringify({me, h, round: data.round}));
-  $("code").value = "";
-  if (location.search) history.replaceState(null, "", location.pathname);
-  render();
+  if (!ready) { $("lmsg").textContent = noNet(); return; }
+  if (!(data.names || []).length) { $("lmsg").textContent = "الأدمن لسه ما جهّزش الأسماء."; return; }
+  try {
+    const h = await sha(code), hs = data.h || {};
+    const me = data.names.find(n => hs[n] === h);
+    if (!me) { $("lmsg").textContent = "الكود غلط ❌ اتأكد منه وجرب تاني."; return; }
+    localStorage.setItem("santa_me", JSON.stringify({me, h, round: data.round}));
+    $("code").value = "";
+    if (location.search) history.replaceState(null, "", location.pathname);
+    render();
+  } catch (e) { $("lmsg").textContent = "حصل خطأ: " + (e.message || e); }
 }
 
 function render() {
   const names = data.names || [], done = data.done || {}, g = data.g || {}, results = data.results || {};
   let s = getSession();
-  if (s && (s.round !== data.round || (data.h || {})[s.me] !== s.h)) {
+  if (ready && s && (s.round !== data.round || (data.h || {})[s.me] !== s.h)) {
     localStorage.removeItem("santa_me"); s = null;
   }
   $("login").hidden = !!s;
@@ -276,20 +323,11 @@ function render() {
         $("wheel").className = ""; $("wheel").textContent = "؟"; $("msg").textContent = "";
       }
     }
-    $("spin").disabled = busy || !!done[s.me];
+    $("spin").disabled = busy || !ready || !!done[s.me];
   }
   $("status").innerHTML = names.map(n => `<span class="tag ${done[n] ? "ok" : ""}">${g[n] === "b" ? "👦" : "👧"} ${esc(n)} ${done[n] ? "✓" : ""}</span>`).join("");
   if (!$("admin").hidden) showCodes();
 }
-
-onValue(root, snap => {
-  data = snap.val() || {};
-  render();
-  if (!loaded) {
-    loaded = true;
-    if (urlCode && !getSession()) login(urlCode);
-  }
-});
 
 $("enter").onclick = () => login($("code").value);
 $("code").onkeydown = e => { if (e.key === "Enter") login($("code").value); };
@@ -298,56 +336,5 @@ $("logout").onclick = () => { localStorage.removeItem("santa_me"); render(); };
 $("spin").onclick = async () => {
   const s = getSession();
   if (!s || busy) return;
+  if (!ready) { $("msg").textContent = noNet(); return; }
   const me = s.me;
-  if ((data.done || {})[me]) return; // لفّ قبل كده
-  busy = true; $("spin").disabled = true; $("msg").textContent = "";
-  const g0 = data.g || {};
-  const pool = (data.pool || []).filter(n => allowed(me, n, g0));
-  const w = $("wheel"); w.className = "spin";
-  const timer = setInterval(() => { w.textContent = pool[Math.floor(Math.random() * pool.length)] || "؟"; }, 90);
-  try {
-    const [res] = await Promise.all([
-      runTransaction(root, d => {
-        if (!d) return d;
-        const p = d.pool || [], done = d.done || {}, g = d.g || {};
-        if (done[me]) return;
-        const rest = (d.names || []).filter(n => !done[n] && n !== me);
-        const opts = p.filter(v => allowed(me, v, g) && matchable(rest, p.filter(x => x !== v), g));
-        if (!opts.length) return;
-        const pick = opts[Math.floor(Math.random() * opts.length)];
-        d.pool = p.filter(n => n !== pick);
-        d.done = {...done, [me]: true};
-        d.results = {...(d.results || {}), [me]: pick};
-        return d;
-      }),
-      new Promise(r => setTimeout(r, 2500))
-    ]);
-    clearInterval(timer);
-    if (res.committed) {
-      data = res.snapshot.val();
-      party();
-    } else {
-      w.className = ""; w.textContent = "؟";
-      $("msg").textContent = (data.done || {})[me] ? "انت لفيت قبل كده 😉" : "مقدرناش نسحب لك اسم. كلم الأدمن.";
-    }
-  } catch (e) {
-    clearInterval(timer); w.className = ""; w.textContent = "؟";
-    $("msg").textContent = "حصل خطأ في الاتصال، جرب تاني.";
-  }
-  busy = false; render();
-};
-
-// ====== الأدمن ======
-function showCodes() {
-  const c = getCodes(), box = $("codes");
-  if (!c || c.round !== data.round) {
-    box.innerHTML = `<div class="msg" style="color:var(--mut)">الأكواد مش محفوظة على الجهاز ده. اضغط "كود جديد للكل" عشان تطلعها.</div>`;
-    return;
-  }
-  const base = location.origin + location.pathname;
-  box.innerHTML = (data.names || []).map((n, i) => {
-    const code = c.codes[n] || "";
-    const text = `أهلاً يا ${n} 🎄\nكودك السري في Secret Santa: ${code}\nأو افتح اللينك ده: ${base}?c=${code}\n🤫 متقولش الكود لحد`;
-    return `<div class="crow"><b>${esc(n)}</b><code>${code}</code><a href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">واتساب</a><button data-i="${i}">نسخ</button></div>`;
-  }).join("");
-  box.querySelectorAll("button[data-i]").forEach(b => b.onclick =
