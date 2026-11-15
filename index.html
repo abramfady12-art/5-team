@@ -338,3 +338,325 @@ $("spin").onclick = async () => {
   if (!s || busy) return;
   if (!ready) { $("msg").textContent = noNet(); return; }
   const me = s.me;
+if ((data.done || {})[me]) return;
+
+  busy = true;
+  $("spin").disabled = true;
+  $("msg").textContent = "";
+
+  const g0 = data.g || {};
+  const pool = (data.pool || []).filter(n => allowed(me, n, g0));
+  const w = $("wheel");
+  w.className = "spin";
+
+  const timer = setInterval(() => {
+    w.textContent = pool[Math.floor(Math.random() * pool.length)] || "؟";
+  }, 90);
+
+  try {
+    const [res] = await Promise.all([
+      FB.runTransaction(root, d => {
+        if (!d) return;
+        const p = d.pool || [];
+        const done = d.done || {};
+        const g = d.g || {};
+
+        if (done[me]) return;
+
+        const rest = (d.names || []).filter(n => !done[n] && n !== me);
+        const opts = p.filter(v =>
+          allowed(me, v, g) &&
+          matchable(rest, p.filter(x => x !== v), g)
+        );
+
+        if (!opts.length) return;
+
+        const pick = opts[Math.floor(Math.random() * opts.length)];
+
+        return {
+          ...d,
+          pool: p.filter(n => n !== pick),
+          done: {...done, [me]: true},
+          results: {...(d.results || {}), [me]: pick}
+        };
+      }),
+      new Promise(resolve => setTimeout(resolve, 2500))
+    ]);
+
+    clearInterval(timer);
+
+    if (res.committed) {
+      data = res.snapshot.val();
+      party();
+    } else {
+      w.className = "";
+      w.textContent = "؟";
+      $("msg").textContent =
+        (data.done || {})[me]
+          ? "انت لفيت قبل كده 😉"
+          : "مقدرناش نسحب لك اسم. كلم الأدمن.";
+    }
+  } catch (e) {
+    clearInterval(timer);
+    console.error(e);
+    w.className = "";
+    w.textContent = "؟";
+    $("msg").textContent = "حصل خطأ في الاتصال، جرب تاني.";
+  }
+
+  busy = false;
+  render();
+};
+
+// ====== الأدمن ======
+
+$("adminBtn").onclick = () => {
+  $("agate").hidden = !$("agate").hidden;
+  if (!$("agate").hidden) $("apass").focus();
+};
+
+$("aopen").onclick = () => {
+  if ($("apass").value === ADMIN_PASS) {
+    $("agate").hidden = true;
+    $("admin").hidden = false;
+
+    const names = data.names || [];
+    const g = data.g || {};
+
+    $("boys").value = names.filter(n => g[n] === "b").join("\n");
+    $("girls").value = names.filter(n => g[n] === "g").join("\n");
+
+    $("gmsg").textContent = "";
+    showCodes();
+    render();
+  } else {
+    $("gmsg").textContent = "الباسورد غلط ❌";
+  }
+};
+
+$("apass").onkeydown = e => {
+  if (e.key === "Enter") $("aopen").click();
+};
+
+function showCodes() {
+  const c = getCodes();
+  const box = $("codes");
+
+  if (!c || c.round !== data.round) {
+    box.innerHTML =
+      '<div class="msg">الأكواد مش محفوظة على الجهاز ده. اضغط "كود جديد للكل" عشان تطلعها.</div>';
+    return;
+  }
+
+  const base = location.origin + location.pathname;
+
+  box.innerHTML = (data.names || []).map((n, i) => {
+    const code = c.codes[n] || "";
+    const message =
+      `أهلاً يا ${n} 🎄\n` +
+      `كودك السري في Secret Santa: ${code}\n` +
+      `أو افتح اللينك ده: ${base}?c=${code}\n` +
+      "🤫 متقولش الكود لحد";
+
+    return `
+      <div class="crow">
+        <b>${esc(n)}</b>
+        <code>${esc(code)}</code>
+        <a href="https://wa.me/?text=${encodeURIComponent(message)}"
+           target="_blank" rel="noopener">واتساب</a>
+        <button type="button" data-i="${i}">نسخ</button>
+      </div>`;
+  }).join("");
+
+  box.querySelectorAll("button[data-i]").forEach(b => {
+    b.onclick = async () => {
+      const n = data.names[Number(b.dataset.i)];
+      const code = c.codes[n];
+      const text = `${n}: ${code}\n${base}?c=${code}`;
+
+      try {
+        await navigator.clipboard.writeText(text);
+        b.textContent = "✓ تم النسخ";
+      } catch {
+        b.textContent = "انسخ يدويًا";
+      }
+    };
+  });
+}
+
+// ====== حفظ الأسماء وبدء جولة جديدة ======
+
+$("save").onclick = async () => {
+  if (!ready) {
+    $("amsg").textContent = noNet();
+    return;
+  }
+
+  const boys = $("boys").value.split("\n")
+    .map(n => n.trim()).filter(Boolean);
+
+  const girls = $("girls").value.split("\n")
+    .map(n => n.trim()).filter(Boolean);
+
+  const names = [...boys, ...girls];
+
+  if (names.length < 2) {
+    $("amsg").textContent = "لازم تدخل اسمين على الأقل.";
+    return;
+  }
+
+  if (new Set(names).size !== names.length) {
+    $("amsg").textContent = "فيه أسماء مكررة، راجع القائمة.";
+    return;
+  }
+
+  const g = {};
+  boys.forEach(n => g[n] = "b");
+  girls.forEach(n => g[n] = "g");
+
+  if (!matchable(names, names, g)) {
+    $("amsg").textContent =
+      "التوزيع مش ممكن بالقواعد الحالية. راجع عدد الولاد والبنات.";
+    return;
+  }
+
+  if (!confirm("بدء جولة جديدة؟ سيتم مسح السحوبات القديمة.")) return;
+
+  const btn = $("save");
+  btn.disabled = true;
+  $("amsg").textContent = "جاري الحفظ وتجهيز الأكواد...";
+
+  try {
+    const {codes, h} = await makeCodes(names);
+    const round = Date.now();
+
+    const next = {
+      round,
+      names,
+      g,
+      pool: [...names],
+      done: {},
+      results: {},
+      h
+    };
+
+    await FB.set(root, next);
+
+    localStorage.setItem("santa_codes", JSON.stringify({
+      round,
+      codes
+    }));
+
+    data = next;
+    render();
+    showCodes();
+
+    $("amsg").textContent = "تم الحفظ بنجاح! 🎉";
+    party();
+  } catch (e) {
+    console.error(e);
+    $("amsg").textContent = "فشل الحفظ. راجع اتصال Firebase.";
+  } finally {
+    btn.disabled = false;
+  }
+};
+
+// ====== إنشاء أكواد جديدة دون مسح السحوبات ======
+
+$("regen").onclick = async () => {
+  if (!ready) {
+    $("amsg").textContent = noNet();
+    return;
+  }
+
+  const names = data.names || [];
+
+  if (!names.length) {
+    $("amsg").textContent = "احفظ الأسماء الأول.";
+    return;
+  }
+
+  if (!confirm("إنشاء أكواد جديدة لكل المشاركين؟")) return;
+
+  const btn = $("regen");
+  btn.disabled = true;
+  $("amsg").textContent = "جاري إنشاء الأكواد...";
+
+  try {
+    const {codes, h} = await makeCodes(names);
+
+    await FB.set(FB.ref(db, "santa/h"), h);
+
+    localStorage.setItem("santa_codes", JSON.stringify({
+      round: data.round,
+      codes
+    }));
+
+    data.h = h;
+    render();
+    showCodes();
+
+    $("amsg").textContent = "تم إنشاء الأكواد الجديدة بنجاح! 🎁";
+  } catch (e) {
+    console.error(e);
+    $("amsg").textContent = "حصل خطأ أثناء إنشاء الأكواد.";
+  } finally {
+    btn.disabled = false;
+  }
+};
+
+// ====== تشغيل Firebase ======
+
+async function startFirebase() {
+  try {
+    setNet("⏳ جاري الاتصال بالسيرفر...");
+
+    const appSDK = await import(
+      "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
+    );
+
+    const dbSDK = await import(
+      "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"
+    );
+
+    FB = {
+      ...dbSDK,
+      initializeApp: appSDK.initializeApp
+    };
+
+    const app = FB.initializeApp(firebaseConfig);
+    db = FB.getDatabase(app);
+    root = FB.ref(db, "santa");
+
+    FB.onValue(root, snapshot => {
+      data = snapshot.val() || {};
+      ready = true;
+      failed = false;
+      setNet("");
+      render();
+
+      if (urlCode && !getSession()) {
+        login(urlCode);
+      }
+    }, error => {
+      console.error(error);
+      ready = false;
+      failed = true;
+      setNet("⚠️ تعذر الاتصال بقاعدة البيانات: " + error.message);
+      render();
+    });
+
+  } catch (e) {
+    console.error(e);
+    ready = false;
+    failed = true;
+    setNet("⚠️ فشل تحميل Firebase: " + (e.message || e));
+    render();
+  }
+}
+
+startFirebase();
+
+</script>
+</body>
+</html>
