@@ -10,11 +10,8 @@
   --gold:#f4c95d;
   --gold-bright:#fff2b2;
   --red:#ef4b5b;
-  --red-dark:#9e0b16;
-  --green:#10b981;
   --ink:#fdf6e3;
   --mut:#b4d2c7;
-  --glass:rgba(10, 26, 38, 0.65);
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{
@@ -28,8 +25,6 @@ body{
   overflow-x:hidden;
   background:#040d14;
 }
-
-/* خلفية الشفق القطبي والنجوم */
 body::before{
   content:"";
   position:fixed;
@@ -42,14 +37,10 @@ body::before{
     linear-gradient(180deg, #040d14 0%, #081e2c 50%, #05131c 100%);
   animation:aurora 16s ease-in-out infinite alternate;
 }
-@keyframes aurora{
-  0%{filter:hue-rotate(0deg) brightness(1)}
-  100%{filter:hue-rotate(22deg) brightness(1.18)}
-}
+@keyframes aurora{0%{filter:hue-rotate(0deg) brightness(1)}100%{filter:hue-rotate(22deg) brightness(1.18)}}
 
 main{width:100%;max-width:480px;position:relative;z-index:2}
 
-/* شارة المبرمج إبرام - كبيرة ومبهرة */
 .dev-badge{
   position:relative;
   width:100%;
@@ -68,8 +59,7 @@ main{width:100%;max-width:480px;position:relative;z-index:2}
 }
 .dev-badge::after{
   content:"";
-  position:absolute;
-  top:-50%;left:-60%;
+  position:absolute;top:-50%;left:-60%;
   width:40%;height:200%;
   background:linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
   transform:rotate(25deg);
@@ -77,18 +67,11 @@ main{width:100%;max-width:480px;position:relative;z-index:2}
 }
 @keyframes glint{0%{left:-60%} 40%,100%{left:140%}}
 @keyframes badgeFloat{0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)}}
-.dev-badge .top-txt{
-  display:block;
-  font-size:.82rem;
-  color:#ffe9a8;
-  font-weight:700;
-  letter-spacing:.5px;
-  margin-bottom:2px;
-}
+.dev-badge .top-txt{display:block;font-size:.82rem;color:#ffe9a8;font-weight:700;letter-spacing:.5px;margin-bottom:2px}
 .dev-badge .eng-name{
   display:block;
   font-family:'Poppins','Cairo',sans-serif;
-  font-size:1.28rem;
+  font-size:1.35rem;
   font-weight:900;
   background:linear-gradient(90deg, #fff, #f4c95d, #ffd166, #fff);
   background-size:200% auto;
@@ -99,7 +82,6 @@ main{width:100%;max-width:480px;position:relative;z-index:2}
   text-shadow:0 2px 15px rgba(244,201,93,0.3);
 }
 
-/* الهيرو والعنوان */
 .hero{text-align:center;font-size:2.4rem;direction:ltr;position:relative;margin-top:4px}
 .hero::before{
   content:"";
@@ -130,7 +112,6 @@ h1{
 }
 @keyframes shine{to{background-position:200% center}}
 
-/* بانر الفرحة لسه 5% المجنون + البطارية الحية */
 .hype-box{
   position:relative;
   background:linear-gradient(135deg, rgba(220, 38, 38, 0.28), rgba(245, 158, 11, 0.22));
@@ -142,10 +123,7 @@ h1{
   box-shadow:0 0 28px rgba(239, 68, 68, 0.35), inset 0 0 15px rgba(255, 200, 80, 0.15);
   animation:hypePulse 2.2s infinite alternate;
 }
-@keyframes hypePulse{
-  0%{box-shadow:0 0 18px rgba(239, 68, 68, 0.3); transform:scale(0.99)}
-  100%{box-shadow:0 0 34px rgba(244, 201, 93, 0.55); transform:scale(1.015)}
-}
+@keyframes hypePulse{0%{box-shadow:0 0 18px rgba(239, 68, 68, 0.3);transform:scale(0.99)}100%{box-shadow:0 0 34px rgba(244, 201, 93, 0.55);transform:scale(1.015)}}
 .hype-title{
   font-weight:900;
   font-size:1.08rem;
@@ -168,7 +146,6 @@ h1{
 }
 @keyframes blinkRed{from{opacity:.75}to{opacity:1;transform:scale(1.06)}}
 
-/* شكل البطارية */
 .battery-wrap{
   display:flex;
   align-items:center;
@@ -202,20 +179,16 @@ h1{
   background:linear-gradient(90deg, #ff2a2a, #ff6b6b);
   transition:width 0.4s ease, background 0.4s ease;
   box-shadow:0 0 10px #ff2a2a;
-  animation:lowBat 1s infinite alternate;
 }
 .bat-fill.charging{
   background:linear-gradient(90deg, #f59e0b, #fde047);
   box-shadow:0 0 14px #f59e0b;
-  animation:none;
 }
 .bat-fill.full{
   width:100% !important;
   background:linear-gradient(90deg, #059669, #34d399, #a7f3d0);
   box-shadow:0 0 18px #10b981;
-  animation:none;
 }
-@keyframes lowBat{from{opacity:.5}to{opacity:1}}
 .bat-pct{
   font-family:'Poppins',sans-serif;
   font-weight:900;
@@ -227,7 +200,6 @@ h1{
 .bat-pct.charging{color:#fde047}
 .bat-pct.full{color:#34d399}
 
-/* البطاقات الزجاجية */
 .card{
   position:relative;
   background:linear-gradient(165deg, rgba(255,255,255,0.13), rgba(255,255,255,0.04));
@@ -254,13 +226,8 @@ select,textarea{
   font-weight:700;
   background:rgba(5, 16, 26, 0.85);
   color:var(--ink);
-  transition:border-color .2s, box-shadow .2s;
 }
-select:focus,textarea:focus{
-  outline:none;
-  border-color:var(--gold);
-  box-shadow:0 0 18px rgba(244,201,93,0.3);
-}
+select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:0 0 18px rgba(244,201,93,0.3)}
 select{
   appearance:none;-webkit-appearance:none;
   background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);
@@ -271,7 +238,6 @@ select{
 option{background:#091f2e;color:#fff}
 textarea{min-height:105px;font-weight:400}
 
-/* الأزرار */
 button{
   font:inherit;
   font-weight:900;
@@ -287,12 +253,7 @@ button{
   box-shadow:0 10px 28px rgba(214, 40, 57, 0.55), inset 0 1px 1px rgba(255,255,255,0.5);
   transition:transform .15s, box-shadow .15s, filter .15s;
 }
-button:hover:not(:disabled){
-  transform:translateY(-2px);
-  box-shadow:0 14px 34px rgba(239, 75, 91, 0.75);
-  filter:brightness(1.06);
-}
-button:active:not(:disabled){transform:translateY(1px)}
+button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 14px 34px rgba(239, 75, 91, 0.75)}
 button.alt{
   background:rgba(255,255,255,0.08);
   color:var(--mut);
@@ -305,7 +266,6 @@ button.alt{
 }
 button:disabled{opacity:.45;cursor:not-allowed}
 
-/* عجلة السحب */
 #wheel{
   margin-top:20px;
   min-height:122px;
@@ -321,13 +281,8 @@ button:disabled{opacity:.45;cursor:not-allowed}
   background:radial-gradient(circle at 50% 0%, rgba(20, 110, 88, 0.45), rgba(4, 13, 20, 0.92));
   border:1.5px solid rgba(244, 201, 93, 0.4);
   box-shadow:inset 0 0 35px rgba(0,0,0,0.85);
-  transition:all .3s ease;
 }
-#wheel.spin{
-  animation:pulse .22s infinite alternate;
-  border-color:#ffd166;
-  box-shadow:0 0 35px rgba(244, 201, 93, 0.55), inset 0 0 30px rgba(0,0,0,0.8);
-}
+#wheel.spin{animation:pulse .22s infinite alternate;border-color:#ffd166}
 #wheel.win{
   background:linear-gradient(120deg, #fff5c0, #f4c95d, #d48c17, #ffe9a0);
   background-size:200% auto;
@@ -344,7 +299,6 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .tag{display:inline-block;margin:4px;padding:6px 13px;border-radius:99px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);font-size:.88rem}
 .tag.ok{background:linear-gradient(120deg,#f4c95d,#c98a1b);color:#241400;border-color:#ffe9a0;font-weight:700}
 
-/* الثلوج والأضواء والزينة */
 .snow{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:1}
 .snow i{position:absolute;top:-40px;font-style:normal;color:#fff;text-shadow:0 0 8px #fff;opacity:.85;animation:fall linear forwards}
 @keyframes fall{to{transform:translate(var(--x),110vh) rotate(360deg)}}
@@ -359,11 +313,9 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .orn::after{content:"";display:block;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 35% 30%,rgba(255,255,255,0.65),transparent 38%),var(--c);box-shadow:0 6px 14px rgba(0,0,0,0.55),inset -4px -6px 8px rgba(0,0,0,0.35)}
 @keyframes swing{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
 
-/* الأرضية الثلجية */
 .ground{position:fixed;bottom:0;left:-5%;right:-5%;height:66px;z-index:3;pointer-events:none;background:linear-gradient(#ffffff,#cfe0f2);border-radius:50% 50% 0 0/40px 40px 0 0;box-shadow:0 -8px 35px rgba(255,255,255,0.3)}
 .ground b{position:absolute;top:-36px;left:5%;right:5%;display:flex;justify-content:space-around;font-size:2.2rem;font-weight:400;direction:ltr}
 
-/* العناصر الطائرة التفاعلية (تعمل صوت جرس عند الضغط!) */
 .roam{
   position:fixed;
   top:0;left:0;
@@ -380,11 +332,8 @@ button:disabled{opacity:.45;cursor:not-allowed}
   align-items:center;
   gap:2px;
   animation:bob 1.2s ease-in-out infinite alternate;
-  transition:transform .2s;
 }
-.roam.ringing span{
-  animation:bellShake .45s ease-in-out !important;
-}
+.roam.ringing span{animation:bellShake .45s ease-in-out !important}
 @keyframes bob{to{translate:0 -9px}}
 @keyframes bellShake{
   0%,100%{transform:rotate(0deg) scale(1.25)}
@@ -394,7 +343,6 @@ button:disabled{opacity:.45;cursor:not-allowed}
   80%{transform:rotate(-15deg) scale(1.25)}
 }
 
-/* فقاعة تلميح الجرس */
 .bell-toast{
   position:fixed;
   z-index:20;
@@ -414,7 +362,6 @@ button:disabled{opacity:.45;cursor:not-allowed}
   100%{opacity:0;transform:translateY(-35px) scale(.95)}
 }
 
-/* زر الموسيقى */
 .fab{
   position:fixed;
   bottom:78px;left:16px;
@@ -433,20 +380,16 @@ button:disabled{opacity:.45;cursor:not-allowed}
   border-color:#a7f3d0;
   box-shadow:0 8px 25px rgba(16,185,129,0.6);
 }
-
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
-[hidden]{display:none!important}
 </style>
 </head>
 <body>
 <div class="snow" id="snow"></div>
 <div class="stars" id="stars"></div>
 <div class="lights" id="lights"></div>
-<button class="fab" id="music" aria-label="تشغيل أو إيقاف الموسيقى" title="موسيقى الكريسماس">🔇</button>
+<button class="fab" id="music" aria-label="تشغيل أو إيقاف الموسيقى">🔇</button>
 <div class="ground"><b><span>🎄</span><span>⛄</span><span>🎁</span><span>🎄</span><span>🎅</span><span>🎁</span><span>⛄</span><span>🎄</span></b></div>
 
 <main>
-  <!-- شارة المبرمج إبرام الكبيرة -->
   <div class="dev-badge">
     <span class="top-txt">💻 Coded with love, caffeine &amp; zero sleep by</span>
     <span class="eng-name">Software Engineer Ebra 🚀</span>
@@ -455,7 +398,6 @@ button:disabled{opacity:.45;cursor:not-allowed}
   <div class="hero"><span>🎄</span><span>🎅</span><span>🎄</span></div>
   <h1>🔋 فرح أخوك الـ5٪</h1>
 
-  <!-- قسم الفرحة لسه 5% المجنون + البطارية -->
   <div class="hype-box">
     <div class="hype-title">
       <span class="alert-pill">⚠️ شحن حرج</span>
@@ -494,7 +436,6 @@ button:disabled{opacity:.45;cursor:not-allowed}
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {getDatabase, ref, onValue, set, runTransaction} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-// ====== إعدادات Firebase والأدمن ======
 const firebaseConfig = {
   apiKey: "AIzaSyC9-9B4h1PYPzdOhZRjCor9ZeXsAm1_JL8",
   authDomain: "secret-santa-8c4fa.firebaseapp.com",
@@ -503,7 +444,6 @@ const firebaseConfig = {
   appId: "1:218179764126:web:4abbe5b9a7c62fbfe8608f"
 };
 const ADMIN_PASS = "1234";
-// =====================================
 
 const db = getDatabase(initializeApp(firebaseConfig));
 const root = ref(db, "santa");
@@ -525,64 +465,13 @@ const flake = (ch = "❄") => {
   $("snow").appendChild(e);
   e.onanimationend = () => e.remove();
 };
-const calm = matchMedia("(prefers-reduced-motion:reduce)").matches;
-if (!calm) setInterval(flake, 240);
-const party = () => { if (!calm) ["🎉","✨","🎁","⭐","🎄","🔔"].forEach((c, k) => { for (let i = 0; i < 8; i++) setTimeout(() => flake(c), (k * 8 + i) * 55); }); };
+setInterval(flake, 240);
+const party = () => { ["🎉","✨","🎁","⭐","🎄","🔔"].forEach((c, k) => { for (let i = 0; i < 8; i++) setTimeout(() => flake(c), (k * 8 + i) * 55); }); };
 
-// ====== محرك الصوت المتطور (موسيقى طويلة متعددة المقاطع + صوت جرس حقيقي) ======
+// نظام الصوت والأغنية
 let ac = null, on = false, loopT = null;
 const mus = $("music");
 
 const ensureAudio = () => {
   if (!ac) ac = new (window.AudioContext || window.webkitAudioContext)();
-  if (ac.state === "suspended") ac.resume();
-};
-
-// صوت جرس الكريسماس المعدني عند الضغط على الأجراس أو عربة سانتا
-function playJingleBellSound(x, y) {
-  ensureAudio();
-  const now = ac.currentTime;
-  // ترددات توافقية تحاكي رنين الجرس المعدني (Sleigh Bell)
-  const freqs = [1567.98, 2093.00, 2637.02, 3135.96, 4186.01];
-  freqs.forEach((f, idx) => {
-    const osc = ac.createOscillator();
-    const gain = ac.createGain();
-    osc.type = idx % 2 === 0 ? "sine" : "triangle";
-    osc.frequency.setValueAtTime(f + (Math.random() * 18 - 9), now);
-    gain.gain.setValueAtTime(0.001, now);
-    gain.gain.linearRampToValueAtTime(0.14 / (idx + 1), now + 0.015);
-    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.85 - idx * 0.08);
-    osc.connect(gain).connect(ac.destination);
-    osc.start(now);
-    osc.stop(now + 0.9);
-  });
-
-  // تأثير بصري وشرارات مكان الضغط
-  if (x && y) {
-    const msgs = ["رنّ الجرس! 🔔", "Ho Ho Ho! 🎅", "عيد سعيد! ✨", "فرحة +10% 🎁", "جرس الحظ! ⭐"];
-    const toast = document.createElement("div");
-    toast.className = "bell-toast";
-    toast.textContent = msgs[Math.floor(Math.random() * msgs.length)];
-    toast.style.left = Math.min(window.innerWidth - 130, Math.max(15, x - 50)) + "px";
-    toast.style.top = Math.max(20, y - 30) + "px";
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 1100);
-    ["✨","🔔","⭐"].forEach((c, i) => setTimeout(() => flake(c), i * 50));
-  }
-}
-
-// نوتات الموسيقى (ميدلي كريسماس طويل: Jingle Bells كاملة + We Wish You a Merry Christmas)
-const NOTES = {
-  G3:196.00, A3:220.00, B3:246.94,
-  C4:261.63, D4:293.66, E4:329.63, F4:349.23, Fs4:369.99, G4:392.00, A4:440.00, B4:493.88,
-  C5:523.25, D5:587.33, E5:659.25
-};
-
-// اللحن الأساسي (مقطعين طويلين)
-const MELODY = [
-  // مقطع 1: Jingle Bells (Verse + Chorus)
-  ["G3",1],["E4",1],["D4",1],["C4",1],["G3",3],["G3",.5],["G3",.5],
-  ["G3",1],["E4",1],["D4",1],["C4",1],["A3",3],["A3",1],
-  ["A3",1],["F4",1],["E4",1],["D4",1],["B3",3],["B3",1],
-  ["G4",1],["G4",1],["F4",1],["D4",1],["E4",3],["G3",1],
-  ["G3",1],["E4",1],["D4",1],["C4",1],["G
+  if (ac.state === "suspended") ac.resume
