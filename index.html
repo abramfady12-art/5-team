@@ -35,7 +35,6 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .msg{margin-top:12px;color:var(--gold);min-height:1.4em;text-align:center;font-weight:700}
 .tag{display:inline-block;margin:4px;padding:5px 12px;border-radius:99px;background:#ffffff14;border:1px solid #ffffff22;font-size:.88rem}
 .tag.ok{background:linear-gradient(120deg,#f4c95d,#c98a1b);color:#2a1a00;border-color:#ffe9a0}
-.credit{text-align:center;color:var(--gold);opacity:.8;font-size:.8rem;margin-top:26px;direction:ltr;letter-spacing:.3px}
 .snow{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
 .snow i{position:absolute;top:-40px;font-style:normal;color:#fff;text-shadow:0 0 6px #fff;opacity:.85;animation:fall linear forwards}
 @keyframes fall{to{transform:translate(var(--x),110vh) rotate(360deg)}}
@@ -48,8 +47,6 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .orn::before{content:"";display:block;width:1px;height:var(--h);background:#f4c95d99;margin:0 auto}
 .orn::after{content:"";display:block;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff9,#0000 35%),var(--c);box-shadow:0 6px 14px #0008,inset -4px -6px 8px #0005}
 @keyframes swing{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
-.sleigh{position:fixed;top:34px;left:-260px;font-size:1.8rem;direction:ltr;white-space:nowrap;z-index:3;pointer-events:none;filter:drop-shadow(0 0 8px #f4c95d99);animation:fly 18s linear infinite}
-@keyframes fly{to{transform:translateX(calc(100vw + 300px))}}
 .ground{position:fixed;bottom:0;left:-5%;right:-5%;height:64px;z-index:2;pointer-events:none;background:linear-gradient(#fff,#cfe0f2);border-radius:50% 50% 0 0/40px 40px 0 0;box-shadow:0 -6px 30px #ffffff44}
 .ground b{position:absolute;top:-36px;left:5%;right:5%;display:flex;justify-content:space-around;font-size:2.2rem;font-weight:400;direction:ltr}
 .hero{text-align:center;font-size:2.2rem;direction:ltr;position:relative}
@@ -57,6 +54,12 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .hero span{display:inline-block;filter:drop-shadow(0 6px 10px #0008)}
 .hero span:nth-child(2){font-size:4.2rem;margin:0 6px;animation:wig 2.4s ease-in-out infinite}
 @keyframes wig{50%{transform:rotate(-8deg) scale(1.08)}}
+.by{width:fit-content;max-width:100%;margin:0 auto 14px;padding:8px 18px;border-radius:18px;background:linear-gradient(120deg,#f4c95d26,#ffffff10);border:1px solid #f4c95d77;color:var(--gold);font-size:.82rem;font-weight:700;direction:ltr;text-align:center;box-shadow:0 0 22px #f4c95d33}
+.roam{position:fixed;top:0;left:0;z-index:3;pointer-events:none;filter:drop-shadow(0 0 8px #f4c95d99)}
+.roam span{display:inline-block;animation:bob 1.2s ease-in-out infinite alternate}
+@keyframes bob{to{translate:0 -8px}}
+.fab{position:fixed;bottom:78px;left:14px;z-index:10;width:52px;height:52px;margin:0;padding:0;border-radius:50%;font-size:1.5rem;animation:tw 1s infinite alternate}
+.fab.on{animation:none}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
 [hidden]{display:none!important}
 </style>
@@ -65,9 +68,10 @@ button:disabled{opacity:.45;cursor:not-allowed}
 <div class="snow" id="snow"></div>
 <div class="stars" id="stars"></div>
 <div class="lights" id="lights"></div>
-<div class="sleigh">🎅🛷🦌🦌🦌</div>
+<button class="fab" id="music" aria-label="موسيقى">🔇</button>
 <div class="ground"><b><span>🎄</span><span>⛄</span><span>🎁</span><span>🎄</span><span>🎅</span><span>🎁</span><span>⛄</span><span>🎄</span></b></div>
 <main>
+  <div class="by">💻 Coded with love, caffeine &amp; zero sleep by Software Engineer Ebra</div>
   <div class="hero"><span>🎄</span><span>🎅</span><span>🎄</span></div>
   <h1>🔋 فرح أخوك الـ5٪</h1>
   <p class="sub">Secret Santa 🎄 الفرحة لسه 5٪.. لف الرول عشان توصل 100٪</p>
@@ -91,7 +95,6 @@ button:disabled{opacity:.45;cursor:not-allowed}
     <div class="msg" id="amsg"></div>
     <div id="status"></div>
   </section>
-  <footer class="credit">Coded with love, caffeine &amp; zero sleep by Software Engineer Ebra 💻</footer>
 </main>
 
 <script type="module">
@@ -130,6 +133,52 @@ const flake = (ch = "❄") => {
 const calm = matchMedia("(prefers-reduced-motion:reduce)").matches;
 if (!calm) setInterval(flake, 250);
 const party = () => { if (!calm) ["🎉","✨","🎁","⭐","🎄"].forEach((c, k) => { for (let i = 0; i < 8; i++) setTimeout(() => flake(c), (k * 8 + i) * 60); }); };
+[["🎅",2.8],["🦌",2.1],["🦌",1.8],["🦌",2.3]].forEach(([ch, sz], k) => {
+  const o = document.createElement("div"), i = document.createElement("span");
+  i.textContent = ch; i.style.fontSize = sz + "rem"; i.style.animationDelay = k * .3 + "s";
+  o.className = "roam"; o.appendChild(i); document.body.appendChild(o);
+  let x = Math.random() * (innerWidth - 60);
+  o.style.transform = `translate(${x}px,${60 + Math.random() * (innerHeight - 200)}px)`;
+  const go = () => {
+    const nx = Math.random() * (innerWidth - 60), ny = 50 + Math.random() * (innerHeight - 190), t = 5 + Math.random() * 6;
+    o.style.transition = `transform ${t}s ease-in-out`;
+    o.style.transform = `translate(${nx}px,${ny}px)`;
+    if (ch === "🦌") i.style.transform = nx > x ? "scaleX(-1)" : "none";
+    x = nx;
+    setTimeout(go, t * 1000);
+  };
+  if (!calm) setTimeout(go, 100 + k * 500);
+});
+// موسيقى Jingle Bells (لحن قديم متاح للجميع) بتتولد من المتصفح مباشرة
+const mus = $("music"), HZ = {C: 261.63, D: 293.66, E: 329.63, F: 349.23, G: 392};
+const tune = "E1 E1 E2 E1 E1 E2 E1 G1 C1.5 D.5 E4 F1 F1 F1.5 F.5 F1 E1 E1 E.5 E.5 E1 D1 D1 E1 D2 G2".split(" ");
+let ac, on = false, loopT;
+const playLoop = () => {
+  let t = ac.currentTime + .05;
+  tune.forEach(tok => {
+    const f = HZ[tok[0]], d = parseFloat(tok.slice(1)) * .34;
+    [[f, "triangle", .5], [f * 2, "sine", .25]].forEach(([fr, ty, v]) => {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = ty; o.frequency.value = fr;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(v * .18, t + .02);
+      g.gain.exponentialRampToValueAtTime(.001, t + d * .95);
+      o.connect(g).connect(ac.destination);
+      o.start(t); o.stop(t + d);
+    });
+    t += d;
+  });
+  loopT = setTimeout(playLoop, (t - ac.currentTime + 1.2) * 1000);
+};
+const toggle = () => {
+  on = !on;
+  if (on) { ac = new (window.AudioContext || window.webkitAudioContext)(); playLoop(); }
+  else { clearTimeout(loopT); ac.close(); }
+  mus.textContent = on ? "🔔" : "🔇";
+  mus.classList.toggle("on", on);
+};
+mus.onclick = toggle;
+addEventListener("pointerdown", e => { if (!on && !e.target.closest("#music")) toggle(); }, {once: true});
 let data = {}, busy = false;
 const saved = () => { try { return JSON.parse(localStorage.getItem("santa") || "null"); } catch { return null; } };
 
