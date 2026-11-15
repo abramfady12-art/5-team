@@ -8,8 +8,8 @@
 <style>
 :root{--bg:#0f2a24;--card:#17392f;--ink:#fdf6e3;--red:#d62839;--gold:#f2c14e;--mut:#9db8ad}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,#1f5143,var(--bg));color:var(--ink);font-family:Cairo,system-ui,sans-serif;display:flex;justify-content:center;padding:24px 16px}
-main{width:100%;max-width:460px}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,#1f5143,var(--bg));color:var(--ink);font-family:Cairo,system-ui,sans-serif;display:flex;justify-content:center;padding:64px 16px 140px;overflow-x:hidden}
+main{width:100%;max-width:460px;position:relative;z-index:1}
 h1{font-size:2rem;font-weight:900;text-align:center;margin:8px 0 4px}
 .sub{text-align:center;color:var(--mut);margin:0 0 24px}
 .card{background:var(--card);border:2px dashed var(--gold);border-radius:20px;padding:20px;margin-bottom:16px}
@@ -29,11 +29,34 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .tag{display:inline-block;margin:4px;padding:4px 10px;border-radius:99px;background:#0f2a24;font-size:.9rem}
 .tag.ok{background:var(--gold);color:#222}
 .credit{text-align:center;color:var(--mut);font-size:.8rem;margin-top:24px;direction:ltr}
+.snow{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.snow i{position:absolute;top:-40px;font-style:normal;color:#fff;opacity:.85;animation:fall linear forwards}
+@keyframes fall{to{transform:translate(var(--x),110vh) rotate(360deg)}}
+.lights{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-around;z-index:5;pointer-events:none;border-top:3px solid #2b1d14}
+.lights i{width:9px;height:14px;border-radius:50%;background:var(--c);box-shadow:0 0 12px var(--c);animation:tw 1s infinite alternate}
+.lights i:nth-child(3n){--c:#ff4d4d}.lights i:nth-child(3n+1){--c:#ffd23f}.lights i:nth-child(3n+2){--c:#4dd2ff;animation-delay:.5s}
+@keyframes tw{to{opacity:.3}}
+.sleigh{position:fixed;top:34px;left:-260px;font-size:1.8rem;direction:ltr;white-space:nowrap;z-index:3;pointer-events:none;animation:fly 18s linear infinite}
+@keyframes fly{to{transform:translateX(calc(100vw + 300px))}}
+.ground{position:fixed;bottom:0;left:0;right:0;height:56px;z-index:2;pointer-events:none;background:#fdfdff;border-radius:60% 60% 0 0/30px 30px 0 0}
+.ground b{position:absolute;top:-34px;left:0;right:0;display:flex;justify-content:space-around;font-size:2.2rem;font-weight:400;direction:ltr}
+.hero{text-align:center;font-size:2.4rem;direction:ltr}
+.hero span:nth-child(2){display:inline-block;font-size:3.6rem;animation:wig 2s ease-in-out infinite}
+@keyframes wig{50%{transform:rotate(-8deg) scale(1.08)}}
+h1{text-shadow:0 0 18px #f2c14e66}
+.card{box-shadow:0 0 28px #f2c14e22}
+#wheel.win{box-shadow:0 0 30px var(--gold)}
+@media(prefers-reduced-motion:reduce){.sleigh,.lights i,.hero span{animation:none}}
 [hidden]{display:none!important}
 </style>
 </head>
 <body>
+<div class="snow" id="snow"></div>
+<div class="lights" id="lights"></div>
+<div class="sleigh">🎅🛷🦌🦌🦌</div>
+<div class="ground"><b><span>🎄</span><span>⛄</span><span>🎁</span><span>🎄</span><span>🎅</span><span>🎁</span><span>⛄</span><span>🎄</span></b></div>
 <main>
+  <div class="hero"><span>🎄</span><span>🎅</span><span>🎄</span></div>
   <h1>🔋 فرح أخوك الـ5٪</h1>
   <p class="sub">Secret Santa 🎄 الفرحة لسه 5٪.. لف الرول عشان توصل 100٪</p>
 
@@ -77,6 +100,17 @@ const ADMIN_PASS = "1234";
 const db = getDatabase(initializeApp(firebaseConfig));
 const root = ref(db, "santa");
 const $ = id => document.getElementById(id);
+$("lights").innerHTML = "<i></i>".repeat(18);
+const flake = (ch = "❄") => {
+  const e = document.createElement("i");
+  e.textContent = ch;
+  e.style.cssText = `left:${Math.random() * 100}%;font-size:${10 + Math.random() * 16}px;animation-duration:${6 + Math.random() * 8}s;--x:${Math.random() * 80 - 40}px`;
+  $("snow").appendChild(e);
+  e.onanimationend = () => e.remove();
+};
+const calm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+if (!calm) setInterval(flake, 250);
+const party = () => { if (!calm) ["🎉","✨","🎁","⭐","🎄"].forEach((c, k) => { for (let i = 0; i < 8; i++) setTimeout(() => flake(c), (k * 8 + i) * 60); }); };
 let data = {}, busy = false;
 const saved = () => { try { return JSON.parse(localStorage.getItem("santa") || "null"); } catch { return null; } };
 
@@ -142,6 +176,7 @@ $("spin").onclick = async () => {
     ]);
     clearInterval(timer);
     if (res.committed) {
+      party();
       localStorage.setItem("santa", JSON.stringify({me, pick: res.snapshot.val().results[me], round: res.snapshot.val().round}));
     } else {
       w.className = ""; w.textContent = "؟";
