@@ -98,6 +98,13 @@ button:disabled{opacity:.45;cursor:not-allowed}
 
   <div style="text-align:center"><button class="alt" id="adminBtn">دخول الأدمن</button></div>
 
+  <section class="card" id="agate" hidden>
+    <label for="apass" style="margin-top:0">باسورد الأدمن</label>
+    <input id="apass" type="password" autocomplete="off" style="letter-spacing:.2em">
+    <button id="aopen">فتح</button>
+    <div class="msg" id="gmsg"></div>
+  </section>
+
   <section class="card" id="admin" hidden>
     <label for="boys" style="margin-top:0">👦 أسماء الولاد (اسم في كل سطر)</label>
     <textarea id="boys"></textarea>
@@ -113,24 +120,7 @@ button:disabled{opacity:.45;cursor:not-allowed}
   </section>
 </main>
 
-<script type="module">
-import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {getDatabase, ref, onValue, set, runTransaction} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-// ====== عدّل هنا ======
-const firebaseConfig = {
-  apiKey: "AIzaSyC9-9B4h1PYPzdOhZRjCor9ZeXsAm1_JL8",
-  authDomain: "secret-santa-8c4fa.firebaseapp.com",
-  databaseURL: "https://secret-santa-8c4fa-default-rtdb.firebaseio.com",
-  projectId: "secret-santa-8c4fa",
-  appId: "1:218179764126:web:4abbe5b9a7c62fbfe8608f"
-};
-const ADMIN_PASS = "1234";
-// ======================
-
-const db = getDatabase(initializeApp(firebaseConfig));
-const root = ref(db, "santa");
-const $ = id => document.getElementById(id);
+<script>const $ = id => document.getElementById(id);
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 $("lights").innerHTML = "<i></i>".repeat(18);
 $("stars").innerHTML = Array.from({length: 60}, () => `<i style="left:${Math.random() * 100}%;top:${Math.random() * 70}%;animation-delay:${Math.random() * 2}s"></i>`).join("");
@@ -197,6 +187,27 @@ const toggle = () => {
 mus.onclick = toggle;
 addEventListener("pointerdown", e => { if (!on && !e.target.closest("#music")) toggle(); }, {once: true});
 
+
+$("adminBtn").onclick = () => { $("agate").hidden = !$("agate").hidden; if (!$("agate").hidden) $("apass").focus(); };
+</script>
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getDatabase, ref, onValue, set, runTransaction} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+// ====== عدّل هنا ======
+const firebaseConfig = {
+  apiKey: "AIzaSyC9-9B4h1PYPzdOhZRjCor9ZeXsAm1_JL8",
+  authDomain: "secret-santa-8c4fa.firebaseapp.com",
+  databaseURL: "https://secret-santa-8c4fa-default-rtdb.firebaseio.com",
+  projectId: "secret-santa-8c4fa",
+  appId: "1:218179764126:web:4abbe5b9a7c62fbfe8608f"
+};
+const ADMIN_PASS = "1234";
+// ======================
+
+window.__santaReady = true;
+const db = getDatabase(initializeApp(firebaseConfig));
+const root = ref(db, "santa");
 let data = {}, busy = false, loaded = false;
 const urlCode = new URLSearchParams(location.search).get("c");
 if (urlCode) $("code").value = urlCode;
@@ -339,16 +350,4 @@ function showCodes() {
     const text = `أهلاً يا ${n} 🎄\nكودك السري في Secret Santa: ${code}\nأو افتح اللينك ده: ${base}?c=${code}\n🤫 متقولش الكود لحد`;
     return `<div class="crow"><b>${esc(n)}</b><code>${code}</code><a href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">واتساب</a><button data-i="${i}">نسخ</button></div>`;
   }).join("");
-  box.querySelectorAll("button[data-i]").forEach(b => b.onclick = () => {
-    const n = data.names[b.dataset.i], code = c.codes[n];
-    navigator.clipboard?.writeText(`${n}: ${code}\n${base}?c=${code}`);
-    b.textContent = "✓";
-  });
-}
-
-$("adminBtn").onclick = () => {
-  if (prompt("باسورد الأدمن:") === ADMIN_PASS) {
-    $("admin").hidden = false;
-    const names = data.names || [], g = data.g || {};
-    $("boys").value = names.filter(n => g[n] === "b").join("\n");
-    $("girls").value = names.filter(n => g[n]
+  box.querySelectorAll("button[data-i]").forEach(b => b.onclick =
