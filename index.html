@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>فرح أخوك الـ5٪ 🔋 Secret Santa</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f2a24;--card:#17392f;--ink:#fdf6e3;--red:#d62839;--gold:#f2c14e;--mut:#9db8ad}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% -10%,#1f5143,var(--bg));color:var(--ink);font-family:Cairo,system-ui,sans-serif;display:flex;justify-content:center;padding:24px 16px}
+main{width:100%;max-width:460px}
+h1{font-size:2rem;font-weight:900;text-align:center;margin:8px 0 4px}
+.sub{text-align:center;color:var(--mut);margin:0 0 24px}
+.card{background:var(--card);border:2px dashed var(--gold);border-radius:20px;padding:20px;margin-bottom:16px}
+label{display:block;margin:10px 0 8px;font-weight:700}
+select,textarea{width:100%;padding:12px;border-radius:12px;border:0;font:inherit;background:#fdf6e3;color:#222}
+textarea{min-height:100px}
+button{font:inherit;font-weight:700;border:0;border-radius:12px;padding:12px 18px;cursor:pointer;background:var(--red);color:#fff;width:100%;margin-top:12px}
+button.alt{background:transparent;color:var(--mut);border:1px solid var(--mut);width:auto;font-size:.85rem}
+button:disabled{opacity:.5;cursor:not-allowed}
+:focus-visible{outline:3px solid var(--gold)}
+#wheel{margin-top:16px;min-height:96px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:900;text-align:center;color:var(--gold);border-radius:16px;background:#0f2a24}
+#wheel.spin{animation:pulse .25s infinite alternate}
+#wheel.win{background:var(--gold);color:#222;font-size:2.2rem}
+@keyframes pulse{to{transform:scale(1.04)}}
+@media(prefers-reduced-motion:reduce){#wheel.spin{animation:none}}
+.msg{margin-top:10px;color:var(--gold);min-height:1.4em;text-align:center}
+.tag{display:inline-block;margin:4px;padding:4px 10px;border-radius:99px;background:#0f2a24;font-size:.9rem}
+.tag.ok{background:var(--gold);color:#222}
+.credit{text-align:center;color:var(--mut);font-size:.8rem;margin-top:24px;direction:ltr}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<main>
+  <h1>🔋 فرح أخوك الـ5٪</h1>
+  <p class="sub">Secret Santa 🎄 الفرحة لسه 5٪.. لف الرول عشان توصل 100٪</p>
+
+  <section class="card">
+    <label for="me" style="margin-top:0">انت مين؟</label>
+    <select id="me"></select>
+    <button id="spin">لف الرول 🎡</button>
+    <div id="wheel">؟</div>
+    <div class="msg" id="msg"></div>
+  </section>
+
+  <div style="text-align:center"><button class="alt" id="adminBtn">دخول الأدمن</button></div>
+
+  <section class="card" id="admin" hidden>
+    <label for="boys" style="margin-top:0">👦 أسماء الولاد (اسم في كل سطر)</label>
+    <textarea id="boys"></textarea>
+    <label for="girls">👧 أسماء البنات (اسم في كل سطر)</label>
+    <textarea id="girls"></textarea>
+    <button id="save">حفظ وبدء من جديد</button>
+    <div class="msg" id="amsg"></div>
+    <div id="status"></div>
+  </section>
+  <footer class="credit">Coded with love, caffeine &amp; zero sleep by Software Engineer Ebra 💻</footer>
+</main>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getDatabase, ref, onValue, set, runTransaction} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+// ====== عدّل هنا ======
+const firebaseConfig = {
+  apiKey: "AIzaSyC9-9B4h1PYPzdOhZRjCor9ZeXsAm1_JL8",
+  authDomain: "secret-santa-8c4fa.firebaseapp.com",
+  databaseURL: "https://secret-santa-8c4fa-default-rtdb.firebaseio.com",
+  projectId: "secret-santa-8c4fa",
+  appId: "1:218179764126:web:4abbe5b9a7c62fbfe8608f"
+};
+const ADMIN_PASS = "1234";
+// ======================
+
+const db = getDatabase(initializeApp(firebaseConfig));
+const root = ref(db, "santa");
+const $ = id => document.getElementById(id);
+let data = {}, busy = false;
+const saved = () => { try { return JSON.parse(localStorage.getItem("santa") || "null"); } catch { return null; } };
+
+// الولد ياخد بنت بس، والبنت ياخد أي حد غير نفسها
+const allowed = (u, v, g) => u !== v && (g[u] !== "b" || g[v] === "g");
+// يتأكد إن لسه فيه توزيع ممكن لباقي الناس (عشان محدش يعلق في الآخر)
+const matchable = (givers, recv, g) => {
+  const m = {};
+  const go = (u, seen) => {
+    for (const v of recv) {
+      if (!allowed(u, v, g) || seen[v]) continue;
+      seen[v] = 1;
+      if (!m[v] || go(m[v], seen)) { m[v] = u; return true; }
+    }
+    return false;
+  };
+  return givers.every(u => go(u, {}));
+};
+
+function render() {
+  const names = data.names || [], done = data.done || {}, g = data.g || {};
+  const left = names.filter(n => !done[n]);
+  $("me").innerHTML = left.length ? left.map(n => `<option>${n}</option>`).join("") : "<option>— كله لف —</option>";
+  $("spin").disabled = busy || !left.length;
+  let s = saved();
+  if (s && s.round !== data.round) {
+    localStorage.removeItem("santa"); s = null;
+    $("wheel").className = ""; $("wheel").textContent = "؟"; $("msg").textContent = "";
+  }
+  if (s && !busy) {
+    $("wheel").className = "win";
+    $("wheel").textContent = s.pick;
+    $("msg").textContent = `يا ${s.me}، هديتك لـ ${s.pick} 🤫 متقولش لحد!`;
+  }
+  $("status").innerHTML = names.map(n => `<span class="tag ${done[n] ? "ok" : ""}">${g[n] === "b" ? "👦" : "👧"} ${n} ${done[n] ? "✓" : ""}</span>`).join("");
+}
+onValue(root, snap => { data = snap.val() || {}; render(); });
+
+$("spin").onclick = async () => {
+  const me = $("me").value;
+  if (!me || busy) return;
+  busy = true; $("spin").disabled = true; $("msg").textContent = "";
+  const g0 = data.g || {};
+  const pool = (data.pool || []).filter(n => allowed(me, n, g0));
+  const w = $("wheel"); w.className = "spin";
+  const timer = setInterval(() => { w.textContent = pool[Math.floor(Math.random() * pool.length)] || "؟"; }, 90);
+  try {
+    const [res] = await Promise.all([
+      runTransaction(root, d => {
+        if (!d) return d;
+        const p = d.pool || [], done = d.done || {}, g = d.g || {};
+        if (done[me]) return;
+        const rest = (d.names || []).filter(n => !done[n] && n !== me);
+        const opts = p.filter(v => allowed(me, v, g) && matchable(rest, p.filter(x => x !== v), g));
+        if (!opts.length) return;
+        const pick = opts[Math.floor(Math.random() * opts.length)];
+        d.pool = p.filter(n => n !== pick);
+        d.done = {...done, [me]: true};
+        d.results = {...(d.results || {}), [me]: pick};
+        return d;
+      }),
+      new Promise(r => setTimeout(r, 2500))
+    ]);
+    clearInterval(timer);
+    if (res.committed) {
+      localStorage.setItem("santa", JSON.stringify({me, pick: res.snapshot.val().results[me], round: res.snapshot.val().round}));
+    } else {
+      w.className = ""; w.textContent = "؟";
+      $("msg").textContent = "مقدرناش نسحب لك اسم. كلم الأدمن.";
+    }
+  } catch (e) {
+    clearInterval(timer); w.className = ""; w.textContent = "؟";
+    $("msg").textContent = "حصل خطأ في الاتصال، جرب تاني.";
+  }
+  busy = false; render();
+};
+
+$("adminBtn").onclick = () => {
+  if (prompt("باسورد الأدمن:") === ADMIN_PASS) {
+    $("admin").hidden = false;
+    const names = data.names || [], g = data.g || {};
+    $("boys").value = names.filter(n => g[n] === "b").join("\n");
+    $("girls").value = names.filter(n => g[n] !== "b").join("\n");
+  }
+};
+
+const clean = t => [...new Set(t.split("\n").map(n => n.replace(/[.$#\[\]\/]/g, "").trim()).filter(Boolean))];
+$("save").onclick = async () => {
+  const boys = clean($("boys").value);
+  const girls = clean($("girls").value).filter(n => !boys.includes(n));
+  const names = [...boys, ...girls], g = {};
+  boys.forEach(n => g[n] = "b"); girls.forEach(n => g[n] = "g");
+  if (names.length < 2 || !matchable(names, names, g)) {
+    $("amsg").textContent = "التوزيع مش ممكن: لازم عدد البنات يساوي عدد الولاد أو يزيد عليه.";
+    return;
+  }
+  if (!confirm("ده هيمسح أي سحب قديم. متأكد؟")) return;
+  await set(root, {names, g, pool: names, done: {}, round: Date.now()});
+  localStorage.removeItem("santa");
+  $("wheel").className = ""; $("wheel").textContent = "؟"; $("msg").textContent = "";
+  $("amsg").textContent = "تم الحفظ ✅";
+};
+</script>
+</body>
+</html>
