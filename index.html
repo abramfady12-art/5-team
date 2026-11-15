@@ -461,7 +461,7 @@ $("stars").innerHTML = Array.from({length: 65}, () => `<i style="left:${Math.ran
 const flake = (ch = "❄") => {
   const e = document.createElement("i");
   e.textContent = ch;
-  e.style.cssText = `left:${Math.random() * 100}%;font-size:${10 + Math.random() * 16}px;animation-duration:${6 + Math.random() * 8}s;--x:${Math.random() * 80 - 40}px`;
+  e.style.cssText = `left:${Math.random() * 100}%;font-size:${10  + Math.random() * 16}px;animation-duration:${6 + Math.random() * 8}s;--x:${Math.random() * 80 - 40}px`;
   $("snow").appendChild(e);
   e.onanimationend = () => e.remove();
 };
