@@ -18,15 +18,15 @@ h1{font-family:Lalezar,Cairo,sans-serif;font-weight:400;font-size:2.7rem;line-he
 .card{position:relative;background:linear-gradient(160deg,#ffffff1c,#ffffff08);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid #f4c95d55;border-radius:28px;padding:22px;margin-bottom:18px;box-shadow:0 20px 50px #0008,inset 0 1px 0 #ffffff33,0 0 40px #f4c95d1a}
 .card::before{content:"";position:absolute;top:0;left:12%;right:12%;height:2px;background:linear-gradient(90deg,#0000,var(--gold),#0000)}
 label{display:block;margin:12px 0 8px;font-weight:700}
-select,textarea{width:100%;padding:14px 16px;border-radius:14px;border:1px solid #f4c95d66;font:inherit;background:#06121ccc;color:var(--ink)}
-select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,#0000 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,#0000 50%);background-position:18px 52%,24px 52%;background-size:6px 6px;background-repeat:no-repeat}
-option{background:#0a2230}
+select,textarea,input{width:100%;padding:14px 16px;border-radius:14px;border:1px solid #f4c95d66;font:inherit;background:#06121ccc;color:var(--ink)}
+input{text-align:center;direction:ltr;letter-spacing:.35em;font-size:1.4rem;font-weight:900;text-transform:uppercase}
 textarea{min-height:100px}
 button{font:inherit;font-weight:900;font-size:1.05rem;border:1px solid #ffd77a;border-radius:16px;padding:14px 18px;cursor:pointer;background:linear-gradient(180deg,#ef4b5b,#b3131f);color:#fff;width:100%;margin-top:14px;box-shadow:0 8px 24px #d6283966,inset 0 1px 0 #ffffff55;transition:transform .15s,box-shadow .15s}
 button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 30px #d6283988}
 button.alt{background:#ffffff0d;color:var(--mut);border:1px solid #ffffff33;width:auto;font-size:.85rem;box-shadow:none;font-weight:700}
 button:disabled{opacity:.45;cursor:not-allowed}
 :focus-visible{outline:3px solid var(--gold)}
+.hello{text-align:center;font-weight:900;font-size:1.25rem;color:var(--gold)}
 #wheel{margin-top:18px;min-height:110px;display:flex;align-items:center;justify-content:center;font-family:Lalezar,Cairo,sans-serif;font-size:2rem;text-align:center;color:var(--gold);border-radius:20px;padding:10px;background:radial-gradient(circle at 50% 0,#14634f66,#06121c);border:1px solid #f4c95d44;box-shadow:inset 0 0 30px #0008}
 #wheel.spin{animation:pulse .25s infinite alternate;box-shadow:0 0 30px #f4c95d66,inset 0 0 30px #0008}
 #wheel.win{background:linear-gradient(120deg,#fff1b8,#f4c95d,#c98a1b,#ffe9a0);background-size:200% auto;animation:pop .6s,shine 3s linear infinite;color:#2a1a00;font-size:2.4rem;box-shadow:0 0 50px #f4c95dbb}
@@ -35,6 +35,11 @@ button:disabled{opacity:.45;cursor:not-allowed}
 .msg{margin-top:12px;color:var(--gold);min-height:1.4em;text-align:center;font-weight:700}
 .tag{display:inline-block;margin:4px;padding:5px 12px;border-radius:99px;background:#ffffff14;border:1px solid #ffffff22;font-size:.88rem}
 .tag.ok{background:linear-gradient(120deg,#f4c95d,#c98a1b);color:#2a1a00;border-color:#ffe9a0}
+.crow{display:flex;align-items:center;gap:8px;margin:8px 0;padding:8px 12px;border-radius:14px;background:#ffffff10;border:1px solid #ffffff22}
+.crow b{flex:1}
+.crow code{direction:ltr;font-weight:900;letter-spacing:.2em;color:var(--gold)}
+.crow a,.crow button{margin:0;width:auto;padding:6px 10px;font-size:.8rem;border-radius:10px;color:#fff;text-decoration:none;background:#25a244;border:1px solid #ffffff55;box-shadow:none}
+.crow button{background:#ffffff1a}
 .snow{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
 .snow i{position:absolute;top:-40px;font-style:normal;color:#fff;text-shadow:0 0 6px #fff;opacity:.85;animation:fall linear forwards}
 @keyframes fall{to{transform:translate(var(--x),110vh) rotate(360deg)}}
@@ -76,12 +81,19 @@ button:disabled{opacity:.45;cursor:not-allowed}
   <h1>🔋 فرح أخوك الـ5٪</h1>
   <p class="sub">Secret Santa 🎄 الفرحة لسه 5٪.. لف الرول عشان توصل 100٪</p>
 
-  <section class="card">
-    <label for="me" style="margin-top:0">انت مين؟</label>
-    <select id="me"></select>
+  <section class="card" id="login">
+    <label for="code" style="margin-top:0">اكتب الكود السري اللي اتبعتلك 🔑</label>
+    <input id="code" maxlength="12" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="••••••">
+    <button id="enter">دخول</button>
+    <div class="msg" id="lmsg"></div>
+  </section>
+
+  <section class="card" id="game" hidden>
+    <div class="hello" id="hello"></div>
     <button id="spin">لف الرول 🎡</button>
     <div id="wheel">؟</div>
     <div class="msg" id="msg"></div>
+    <div style="text-align:center"><button class="alt" id="logout">خروج</button></div>
   </section>
 
   <div style="text-align:center"><button class="alt" id="adminBtn">دخول الأدمن</button></div>
@@ -93,6 +105,10 @@ button:disabled{opacity:.45;cursor:not-allowed}
     <textarea id="girls"></textarea>
     <button id="save">حفظ وبدء من جديد</button>
     <div class="msg" id="amsg"></div>
+    <label>🔑 الأكواد (ابعت لكل واحد كوده في برايفيت)</label>
+    <div id="codes"></div>
+    <button class="alt" id="regen" style="margin-top:10px">كود جديد للكل (من غير مسح السحب)</button>
+    <label>الحالة</label>
     <div id="status"></div>
   </section>
 </main>
@@ -115,6 +131,7 @@ const ADMIN_PASS = "1234";
 const db = getDatabase(initializeApp(firebaseConfig));
 const root = ref(db, "santa");
 const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 $("lights").innerHTML = "<i></i>".repeat(18);
 $("stars").innerHTML = Array.from({length: 60}, () => `<i style="left:${Math.random() * 100}%;top:${Math.random() * 70}%;animation-delay:${Math.random() * 2}s"></i>`).join("");
 [["3%","#d62839",70,0],["11%","#f4c95d",40,.6],["88%","#2ec4b6",50,.3],["96%","#9b5de5",85,.9]].forEach(([l, c, h, d]) => {
@@ -179,8 +196,25 @@ const toggle = () => {
 };
 mus.onclick = toggle;
 addEventListener("pointerdown", e => { if (!on && !e.target.closest("#music")) toggle(); }, {once: true});
-let data = {}, busy = false;
-const saved = () => { try { return JSON.parse(localStorage.getItem("santa") || "null"); } catch { return null; } };
+
+let data = {}, busy = false, loaded = false;
+const urlCode = new URLSearchParams(location.search).get("c");
+if (urlCode) $("code").value = urlCode;
+
+// ====== الأكواد ======
+const sha = async t => [...new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t)))].map(b => b.toString(16).padStart(2, "0")).join("");
+const ALPHA = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
+const genCode = () => Array.from(crypto.getRandomValues(new Uint8Array(6)), b => ALPHA[b % ALPHA.length]).join("");
+async function makeCodes(names) {
+  const codes = {}, used = new Set(), h = {};
+  for (const n of names) {
+    let c; do { c = genCode(); } while (used.has(c));
+    used.add(c); codes[n] = c; h[n] = await sha(c);
+  }
+  return {codes, h};
+}
+const getSession = () => { try { return JSON.parse(localStorage.getItem("santa_me") || "null"); } catch { return null; } };
+const getCodes = () => { try { return JSON.parse(localStorage.getItem("santa_codes") || "null"); } catch { return null; } };
 
 // الولد ياخد بنت بس، والبنت ياخد أي حد غير نفسها
 const allowed = (u, v, g) => u !== v && (g[u] !== "b" || g[v] === "g");
@@ -198,28 +232,63 @@ const matchable = (givers, recv, g) => {
   return givers.every(u => go(u, {}));
 };
 
-function render() {
-  const names = data.names || [], done = data.done || {}, g = data.g || {};
-  const left = names.filter(n => !done[n]);
-  $("me").innerHTML = left.length ? left.map(n => `<option>${n}</option>`).join("") : "<option>— كله لف —</option>";
-  $("spin").disabled = busy || !left.length;
-  let s = saved();
-  if (s && s.round !== data.round) {
-    localStorage.removeItem("santa"); s = null;
-    $("wheel").className = ""; $("wheel").textContent = "؟"; $("msg").textContent = "";
-  }
-  if (s && !busy) {
-    $("wheel").className = "win";
-    $("wheel").textContent = s.pick;
-    $("msg").textContent = `يا ${s.me}، هديتك لـ ${s.pick} 🤫 متقولش لحد!`;
-  }
-  $("status").innerHTML = names.map(n => `<span class="tag ${done[n] ? "ok" : ""}">${g[n] === "b" ? "👦" : "👧"} ${n} ${done[n] ? "✓" : ""}</span>`).join("");
+async function login(raw) {
+  const code = (raw || "").trim().toUpperCase();
+  if (!code) return;
+  $("lmsg").textContent = "";
+  const h = await sha(code), hs = data.h || {};
+  const me = (data.names || []).find(n => hs[n] === h);
+  if (!me) { $("lmsg").textContent = "الكود غلط ❌ اتأكد منه وجرب تاني."; return; }
+  localStorage.setItem("santa_me", JSON.stringify({me, h, round: data.round}));
+  $("code").value = "";
+  if (location.search) history.replaceState(null, "", location.pathname);
+  render();
 }
-onValue(root, snap => { data = snap.val() || {}; render(); });
+
+function render() {
+  const names = data.names || [], done = data.done || {}, g = data.g || {}, results = data.results || {};
+  let s = getSession();
+  if (s && (s.round !== data.round || (data.h || {})[s.me] !== s.h)) {
+    localStorage.removeItem("santa_me"); s = null;
+  }
+  $("login").hidden = !!s;
+  $("game").hidden = !s;
+  if (s) {
+    $("hello").textContent = `أهلاً يا ${s.me} 👋`;
+    const res = results[s.me];
+    if (!busy) {
+      if (res) {
+        $("wheel").className = "win";
+        $("wheel").textContent = res;
+        $("msg").textContent = `يا ${s.me}، هديتك لـ ${res} 🤫 متقولش لحد!`;
+      } else {
+        $("wheel").className = ""; $("wheel").textContent = "؟"; $("msg").textContent = "";
+      }
+    }
+    $("spin").disabled = busy || !!done[s.me];
+  }
+  $("status").innerHTML = names.map(n => `<span class="tag ${done[n] ? "ok" : ""}">${g[n] === "b" ? "👦" : "👧"} ${esc(n)} ${done[n] ? "✓" : ""}</span>`).join("");
+  if (!$("admin").hidden) showCodes();
+}
+
+onValue(root, snap => {
+  data = snap.val() || {};
+  render();
+  if (!loaded) {
+    loaded = true;
+    if (urlCode && !getSession()) login(urlCode);
+  }
+});
+
+$("enter").onclick = () => login($("code").value);
+$("code").onkeydown = e => { if (e.key === "Enter") login($("code").value); };
+$("logout").onclick = () => { localStorage.removeItem("santa_me"); render(); };
 
 $("spin").onclick = async () => {
-  const me = $("me").value;
-  if (!me || busy) return;
+  const s = getSession();
+  if (!s || busy) return;
+  const me = s.me;
+  if ((data.done || {})[me]) return; // لفّ قبل كده
   busy = true; $("spin").disabled = true; $("msg").textContent = "";
   const g0 = data.g || {};
   const pool = (data.pool || []).filter(n => allowed(me, n, g0));
@@ -244,11 +313,11 @@ $("spin").onclick = async () => {
     ]);
     clearInterval(timer);
     if (res.committed) {
+      data = res.snapshot.val();
       party();
-      localStorage.setItem("santa", JSON.stringify({me, pick: res.snapshot.val().results[me], round: res.snapshot.val().round}));
     } else {
       w.className = ""; w.textContent = "؟";
-      $("msg").textContent = "مقدرناش نسحب لك اسم. كلم الأدمن.";
+      $("msg").textContent = (data.done || {})[me] ? "انت لفيت قبل كده 😉" : "مقدرناش نسحب لك اسم. كلم الأدمن.";
     }
   } catch (e) {
     clearInterval(timer); w.className = ""; w.textContent = "؟";
@@ -257,31 +326,29 @@ $("spin").onclick = async () => {
   busy = false; render();
 };
 
+// ====== الأدمن ======
+function showCodes() {
+  const c = getCodes(), box = $("codes");
+  if (!c || c.round !== data.round) {
+    box.innerHTML = `<div class="msg" style="color:var(--mut)">الأكواد مش محفوظة على الجهاز ده. اضغط "كود جديد للكل" عشان تطلعها.</div>`;
+    return;
+  }
+  const base = location.origin + location.pathname;
+  box.innerHTML = (data.names || []).map((n, i) => {
+    const code = c.codes[n] || "";
+    const text = `أهلاً يا ${n} 🎄\nكودك السري في Secret Santa: ${code}\nأو افتح اللينك ده: ${base}?c=${code}\n🤫 متقولش الكود لحد`;
+    return `<div class="crow"><b>${esc(n)}</b><code>${code}</code><a href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">واتساب</a><button data-i="${i}">نسخ</button></div>`;
+  }).join("");
+  box.querySelectorAll("button[data-i]").forEach(b => b.onclick = () => {
+    const n = data.names[b.dataset.i], code = c.codes[n];
+    navigator.clipboard?.writeText(`${n}: ${code}\n${base}?c=${code}`);
+    b.textContent = "✓";
+  });
+}
+
 $("adminBtn").onclick = () => {
   if (prompt("باسورد الأدمن:") === ADMIN_PASS) {
     $("admin").hidden = false;
     const names = data.names || [], g = data.g || {};
     $("boys").value = names.filter(n => g[n] === "b").join("\n");
-    $("girls").value = names.filter(n => g[n] !== "b").join("\n");
-  }
-};
-
-const clean = t => [...new Set(t.split("\n").map(n => n.replace(/[.$#\[\]\/]/g, "").trim()).filter(Boolean))];
-$("save").onclick = async () => {
-  const boys = clean($("boys").value);
-  const girls = clean($("girls").value).filter(n => !boys.includes(n));
-  const names = [...boys, ...girls], g = {};
-  boys.forEach(n => g[n] = "b"); girls.forEach(n => g[n] = "g");
-  if (names.length < 2 || !matchable(names, names, g)) {
-    $("amsg").textContent = "التوزيع مش ممكن: لازم عدد البنات يساوي عدد الولاد أو يزيد عليه.";
-    return;
-  }
-  if (!confirm("ده هيمسح أي سحب قديم. متأكد؟")) return;
-  await set(root, {names, g, pool: names, done: {}, round: Date.now()});
-  localStorage.removeItem("santa");
-  $("wheel").className = ""; $("wheel").textContent = "؟"; $("msg").textContent = "";
-  $("amsg").textContent = "تم الحفظ ✅";
-};
-</script>
-</body>
-</html>
+    $("girls").value = names.filter(n => g[n]
