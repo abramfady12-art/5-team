@@ -3,1526 +3,285 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#07151d">
-<title>فرح أخوك الـ5٪ 🔋 | Secret Santa</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Lalezar&display=swap" rel="stylesheet">
-
+<title>فرح أخوك الـ5٪ 🔋 Secret Santa</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Lalezar&display=swap" rel="stylesheet">
 <style>
-:root{
-  --gold:#ffd76a;
-  --gold2:#f3a928;
-  --red:#ff425d;
-  --mint:#4ff0c2;
-  --ink:#fff8e9;
-  --muted:#b9d1cb;
-  --panel:rgba(8,25,34,.78);
-}
-
+:root{--gold:#f4c95d;--ink:#fdf6e3;--mut:#a9c4ba}
 *{box-sizing:border-box}
-
-html{scroll-behavior:smooth}
-
-body{
-  margin:0;
-  min-height:100vh;
-  overflow-x:hidden;
-  color:var(--ink);
-  font-family:Cairo,system-ui,sans-serif;
-  display:flex;
-  justify-content:center;
-  padding:82px 16px 145px;
-  background:#06121c;
-  isolation:isolate;
-}
-
-body::before{
-  content:"";
-  position:fixed;
-  inset:-15%;
-  z-index:-3;
-  background:
-    radial-gradient(ellipse at 15% 15%,#00a87955,transparent 35%),
-    radial-gradient(ellipse at 85% 22%,#9a25b866,transparent 34%),
-    radial-gradient(ellipse at 55% 85%,#ed274533,transparent 38%),
-    radial-gradient(ellipse at 50% 50%,#103a4b,#040b14 70%);
-  animation:aurora 18s ease-in-out infinite alternate;
-}
-
-body::after{
-  content:"";
-  position:fixed;
-  inset:0;
-  z-index:-2;
-  pointer-events:none;
-  opacity:.23;
-  background-image:radial-gradient(#fff 1px,transparent 1px);
-  background-size:37px 37px;
-  mask-image:linear-gradient(transparent,#000 20%,#000 80%,transparent);
-}
-
-@keyframes aurora{
-  to{
-    transform:scale(1.08) rotate(3deg);
-    filter:hue-rotate(35deg) brightness(1.2);
-  }
-}
-
-main{
-  width:100%;
-  max-width:510px;
-  position:relative;
-  z-index:2;
-}
-
-.by{
-  width:fit-content;
-  max-width:100%;
-  margin:0 auto 15px;
-  padding:11px 20px;
-  border-radius:20px;
-  border:1px solid #ffd76a99;
-  background:linear-gradient(110deg,#ffd76a20,#fff2 45%,#ff426022);
-  color:var(--gold);
-  font-size:1rem;
-  font-weight:900;
-  letter-spacing:.5px;
-  direction:ltr;
-  text-align:center;
-  box-shadow:0 0 28px #ffd76a30,inset 0 1px #fff5;
-  animation:byGlow 3s ease-in-out infinite alternate;
-}
-
-.by strong{
-  display:inline-block;
-  font-family:Lalezar,Cairo,sans-serif;
-  font-size:1.8rem;
-  line-height:1.1;
-  color:#fff2b5;
-  text-shadow:0 0 8px #ffd76a,0 0 22px #ff9e26;
-  vertical-align:middle;
-  margin-inline:4px;
-}
-
-@keyframes byGlow{
-  to{
-    box-shadow:0 0 38px #ffd76a66,inset 0 1px #fff8;
-    transform:translateY(-2px);
-  }
-}
-
-.hero{
-  direction:ltr;
-  text-align:center;
-  font-size:2.4rem;
-  margin:6px 0 2px;
-  filter:drop-shadow(0 8px 14px #0008);
-}
-
-.hero span{display:inline-block}
-
-.hero span:nth-child(2){
-  font-size:4.7rem;
-  animation:heroDance 2.2s ease-in-out infinite;
-}
-
-.hero span:first-child{
-  animation:treeSway 3s ease-in-out infinite alternate;
-}
-
-.hero span:last-child{
-  animation:treeSway 3s ease-in-out infinite alternate-reverse;
-}
-
-@keyframes heroDance{
-  50%{transform:rotate(-10deg) translateY(-8px) scale(1.1)}
-}
-
-@keyframes treeSway{
-  to{transform:rotate(8deg)}
-}
-
-h1{
-  font-family:Lalezar,Cairo,sans-serif;
-  font-weight:400;
-  font-size:clamp(2.65rem,10vw,3.8rem);
-  line-height:1.15;
-  text-align:center;
-  margin:4px 0 6px;
-  background:linear-gradient(
-    100deg,
-    #fff4bd,
-    #ffd76a 25%,
-    #ff9d24 48%,
-    #fff0a5 68%,
-    #ffca4c
-  );
-  background-size:240% auto;
-  -webkit-background-clip:text;
-  background-clip:text;
-  color:transparent;
-  animation:goldShine 4s linear infinite;
-  filter:drop-shadow(0 5px 16px #f4c95d66);
-}
-
-@keyframes goldShine{
-  to{background-position:240% center}
-}
-
-.sub{
-  text-align:center;
-  margin:0 auto 23px;
-  max-width:440px;
-  color:#fff2c5;
-  font-weight:900;
-  font-size:clamp(1.05rem,4vw,1.28rem);
-  line-height:1.9;
-  text-shadow:0 0 9px #ffcf58,0 0 22px #ff4b68,0 3px 8px #000;
-  animation:subtitlePulse 1.8s ease-in-out infinite alternate;
-}
-
-.sub .five{
-  display:inline-block;
-  color:#fff;
-  background:linear-gradient(120deg,#ff405d,#ff9b35);
-  padding:0 12px;
-  border-radius:12px;
-  transform:rotate(-4deg);
-  box-shadow:0 0 20px #ff425d99;
-  animation:fiveBeat .8s ease-in-out infinite alternate;
-}
-
-@keyframes subtitlePulse{
-  to{
-    text-shadow:0 0 14px #ffd76a,0 0 35px #ff426d,0 3px 8px #000;
-    transform:scale(1.015);
-  }
-}
-
-@keyframes fiveBeat{
-  to{transform:rotate(4deg) scale(1.12)}
-}
-
-.progress-wrap{
-  margin:0 auto 22px;
-  max-width:390px;
-}
-
-.progress-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  color:#ffe9a5;
-  font-size:.82rem;
-  font-weight:900;
-  margin-bottom:7px;
-}
-
-.progress{
-  height:13px;
-  border-radius:99px;
-  background:#ffffff18;
-  border:1px solid #ffd76a66;
-  overflow:hidden;
-  box-shadow:inset 0 2px 5px #0008;
-}
-
-.progress i{
-  display:block;
-  height:100%;
-  width:5%;
-  border-radius:99px;
-  background:linear-gradient(90deg,#ff4265,#ffd76a);
-  box-shadow:0 0 16px #ffd76a;
-  transition:width .8s cubic-bezier(.2,.8,.2,1);
-}
-
-.card{
-  position:relative;
-  overflow:hidden;
-  margin-bottom:18px;
-  padding:24px;
-  border-radius:28px;
-  border:1px solid #ffd76a66;
-  background:
-    linear-gradient(145deg,rgba(255,255,255,.14),rgba(255,255,255,.045)),
-    var(--panel);
-  -webkit-backdrop-filter:blur(18px);
-  backdrop-filter:blur(18px);
-  box-shadow:0 22px 55px #0009,inset 0 1px #ffffff35,0 0 38px #ffd76a16;
-}
-
-.card::before{
-  content:"";
-  position:absolute;
-  top:0;
-  left:10%;
-  right:10%;
-  height:2px;
-  background:linear-gradient(90deg,transparent,var(--gold),#ff4265,var(--gold),transparent);
-}
-
-.card::after{
-  content:"✦";
-  position:absolute;
-  top:12px;
-  left:17px;
-  color:#ffd76a66;
-  font-size:1.3rem;
-  pointer-events:none;
-}
-
-label{
-  display:block;
-  margin:12px 0 8px;
-  font-weight:900;
-  color:#ffe7a0;
-}
-
-select,textarea{
-  width:100%;
-  padding:14px 16px;
-  border-radius:15px;
-  border:1px solid #ffd76a77;
-  font:inherit;
-  background:#061722;
-  color:var(--ink);
-  outline:none;
-  box-shadow:inset 0 2px 8px #0005;
-  transition:border-color .2s,box-shadow .2s;
-}
-
-select:focus,textarea:focus{
-  border-color:#fff0a5;
-  box-shadow:0 0 0 3px #ffd76a22,0 0 20px #ffd76a22;
-}
-
-select{
-  appearance:none;
-  -webkit-appearance:none;
-  background-image:
-    linear-gradient(45deg,transparent 50%,var(--gold) 50%),
-    linear-gradient(135deg,var(--gold) 50%,transparent 50%);
-  background-position:18px 52%,24px 52%;
-  background-size:6px 6px;
-  background-repeat:no-repeat;
-}
-
+body{margin:0;min-height:100vh;color:var(--ink);font-family:Cairo,system-ui,sans-serif;display:flex;justify-content:center;padding:70px 16px 150px;overflow-x:hidden;background:#06121c}
+body::before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(60% 50% at 20% 10%,#14634f88,#0000),radial-gradient(50% 40% at 85% 25%,#5b2a8c55,#0000),radial-gradient(70% 60% at 50% 110%,#0c3b30,#0000),linear-gradient(#06121c,#0a2230);animation:aur 18s ease-in-out infinite alternate}
+@keyframes aur{to{filter:hue-rotate(25deg) brightness(1.2)}}
+main{width:100%;max-width:460px;position:relative;z-index:1}
+h1{font-family:Lalezar,Cairo,sans-serif;font-weight:400;font-size:2.7rem;line-height:1.2;text-align:center;margin:6px 0 2px;background:linear-gradient(100deg,#fff1b8,#f4c95d 35%,#c98a1b 55%,#ffe9a0 75%,#f4c95d);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite;filter:drop-shadow(0 4px 14px #f4c95d44)}
+@keyframes shine{to{background-position:200% center}}
+.sub{text-align:center;color:var(--mut);margin:0 0 26px;font-size:.98rem}
+.card{position:relative;background:linear-gradient(160deg,#ffffff1c,#ffffff08);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid #f4c95d55;border-radius:28px;padding:22px;margin-bottom:18px;box-shadow:0 20px 50px #0008,inset 0 1px 0 #ffffff33,0 0 40px #f4c95d1a}
+.card::before{content:"";position:absolute;top:0;left:12%;right:12%;height:2px;background:linear-gradient(90deg,#0000,var(--gold),#0000)}
+label{display:block;margin:12px 0 8px;font-weight:700}
+select,textarea{width:100%;padding:14px 16px;border-radius:14px;border:1px solid #f4c95d66;font:inherit;background:#06121ccc;color:var(--ink)}
+select{appearance:none;-webkit-appearance:none;background-image:linear-gradient(45deg,#0000 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,#0000 50%);background-position:18px 52%,24px 52%;background-size:6px 6px;background-repeat:no-repeat}
 option{background:#0a2230}
-
-textarea{
-  min-height:100px;
-  resize:vertical;
-}
-
-button{
-  font:inherit;
-  font-weight:900;
-  font-size:1.04rem;
-  border:1px solid #ffe6a0;
-  border-radius:16px;
-  padding:14px 18px;
-  cursor:pointer;
-  color:#fff;
-  width:100%;
-  margin-top:14px;
-  background:linear-gradient(135deg,#ff5369,#bd102d 60%,#81152c);
-  box-shadow:0 9px 25px #d6283966,inset 0 1px #ffffff66;
-  transition:transform .18s,filter .18s,box-shadow .18s;
-}
-
-button:hover:not(:disabled){
-  transform:translateY(-3px);
-  filter:brightness(1.12);
-  box-shadow:0 14px 32px #d6283988,inset 0 1px #ffffff77;
-}
-
-button:active:not(:disabled){
-  transform:translateY(0) scale(.985);
-}
-
-button:disabled{
-  opacity:.45;
-  cursor:not-allowed;
-}
-
-button.alt{
-  background:#ffffff0d;
-  color:var(--muted);
-  border:1px solid #ffffff44;
-  width:auto;
-  font-size:.88rem;
-  box-shadow:none;
-  font-weight:800;
-}
-
-#spin{
-  font-size:1.15rem;
-  letter-spacing:.2px;
-  background:linear-gradient(120deg,#ff5369,#b80f30 48%,#ff8a39);
-  background-size:200% auto;
-  animation:buttonFlow 4s linear infinite;
-}
-
-@keyframes buttonFlow{
-  to{background-position:200% center}
-}
-
-#wheel{
-  margin-top:18px;
-  min-height:122px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-family:Lalezar,Cairo,sans-serif;
-  font-size:2.1rem;
-  text-align:center;
-  color:var(--gold);
-  border-radius:22px;
-  padding:14px;
-  overflow-wrap:anywhere;
-  background:radial-gradient(circle at 50% 0,#176c5a88,#06121c 75%);
-  border:1px solid #ffd76a66;
-  box-shadow:inset 0 0 35px #0009,0 0 20px #ffd76a12;
-}
-
-#wheel.spin{
-  animation:wheelPulse .24s infinite alternate;
-  box-shadow:0 0 32px #ffd76a77,inset 0 0 30px #0008;
-}
-
-#wheel.win{
-  background:linear-gradient(120deg,#fff1b8,#ffd76a,#f3a928,#ffe9a0);
-  background-size:220% auto;
-  animation:winPop .65s,goldShine 3s linear infinite;
-  color:#281900;
-  font-size:2.55rem;
-  box-shadow:0 0 55px #ffd76acc;
-}
-
-@keyframes wheelPulse{
-  to{transform:scale(1.035) rotate(.5deg)}
-}
-
-@keyframes winPop{
-  from{transform:scale(.55) rotate(-5deg);opacity:0}
-  to{transform:scale(1);opacity:1}
-}
-
-.msg{
-  margin-top:13px;
-  color:var(--gold);
-  min-height:1.5em;
-  text-align:center;
-  font-weight:900;
-  text-shadow:0 0 12px #ffd76a66;
-}
-
-.tag{
-  display:inline-block;
-  margin:4px;
-  padding:6px 12px;
-  border-radius:99px;
-  background:#ffffff12;
-  border:1px solid #ffffff2c;
-  font-size:.88rem;
-}
-
-.tag.ok{
-  background:linear-gradient(120deg,#ffe7a0,#e7a82d);
-  color:#2a1a00;
-  border-color:#fff0b5;
-}
+textarea{min-height:100px}
+button{font:inherit;font-weight:900;font-size:1.05rem;border:1px solid #ffd77a;border-radius:16px;padding:14px 18px;cursor:pointer;background:linear-gradient(180deg,#ef4b5b,#b3131f);color:#fff;width:100%;margin-top:14px;box-shadow:0 8px 24px #d6283966,inset 0 1px 0 #ffffff55;transition:transform .15s,box-shadow .15s}
+button:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 30px #d6283988}
+button.alt{background:#ffffff0d;color:var(--mut);border:1px solid #ffffff33;width:auto;font-size:.85rem;box-shadow:none;font-weight:700}
+button:disabled{opacity:.45;cursor:not-allowed}
+:focus-visible{outline:3px solid var(--gold)}
+#wheel{margin-top:18px;min-height:110px;display:flex;align-items:center;justify-content:center;font-family:Lalezar,Cairo,sans-serif;font-size:2rem;text-align:center;color:var(--gold);border-radius:20px;padding:10px;background:radial-gradient(circle at 50% 0,#14634f66,#06121c);border:1px solid #f4c95d44;box-shadow:inset 0 0 30px #0008}
+#wheel.spin{animation:pulse .25s infinite alternate;box-shadow:0 0 30px #f4c95d66,inset 0 0 30px #0008}
+#wheel.win{background:linear-gradient(120deg,#fff1b8,#f4c95d,#c98a1b,#ffe9a0);background-size:200% auto;animation:pop .6s,shine 3s linear infinite;color:#2a1a00;font-size:2.4rem;box-shadow:0 0 50px #f4c95dbb}
+@keyframes pulse{to{transform:scale(1.04)}}
+@keyframes pop{from{transform:scale(.6);opacity:0}}
+.msg{margin-top:12px;color:var(--gold);min-height:1.4em;text-align:center;font-weight:700}
+.tag{display:inline-block;margin:4px;padding:5px 12px;border-radius:99px;background:#ffffff14;border:1px solid #ffffff22;font-size:.88rem}
+.tag.ok{background:linear-gradient(120deg,#f4c95d,#c98a1b);color:#2a1a00;border-color:#ffe9a0}
+.snow{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.snow i{position:absolute;top:-40px;font-style:normal;color:#fff;text-shadow:0 0 6px #fff;opacity:.85;animation:fall linear forwards}
+@keyframes fall{to{transform:translate(var(--x),110vh) rotate(360deg)}}
+.stars i{position:fixed;width:2px;height:2px;border-radius:50%;background:#fff;box-shadow:0 0 6px #fff;z-index:-1;animation:tw 2s infinite alternate}
+.lights{position:fixed;top:0;left:0;right:0;display:flex;justify-content:space-around;z-index:5;pointer-events:none;border-top:3px solid #2b1d14}
+.lights i{width:9px;height:14px;border-radius:50%;background:var(--c);box-shadow:0 0 12px var(--c);animation:tw 1s infinite alternate}
+.lights i:nth-child(3n){--c:#ff4d4d}.lights i:nth-child(3n+1){--c:#ffd23f}.lights i:nth-child(3n+2){--c:#4dd2ff;animation-delay:.5s}
+@keyframes tw{to{opacity:.3}}
+.orn{position:fixed;top:0;z-index:4;pointer-events:none;transform-origin:50% 0;animation:swing 3s ease-in-out infinite alternate}
+.orn::before{content:"";display:block;width:1px;height:var(--h);background:#f4c95d99;margin:0 auto}
+.orn::after{content:"";display:block;width:30px;height:30px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff9,#0000 35%),var(--c);box-shadow:0 6px 14px #0008,inset -4px -6px 8px #0005}
+@keyframes swing{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+.ground{position:fixed;bottom:0;left:-5%;right:-5%;height:64px;z-index:2;pointer-events:none;background:linear-gradient(#fff,#cfe0f2);border-radius:50% 50% 0 0/40px 40px 0 0;box-shadow:0 -6px 30px #ffffff44}
+.ground b{position:absolute;top:-36px;left:5%;right:5%;display:flex;justify-content:space-around;font-size:2.2rem;font-weight:400;direction:ltr}
+.hero{text-align:center;font-size:2.2rem;direction:ltr;position:relative}
+.hero::before{content:"";position:absolute;left:50%;top:50%;width:240px;height:240px;transform:translate(-50%,-50%);background:radial-gradient(#f4c95d44,#0000 65%);z-index:-1}
+.hero span{display:inline-block;filter:drop-shadow(0 6px 10px #0008)}
+.hero span:nth-child(2){font-size:4.2rem;margin:0 6px;animation:wig 2.4s ease-in-out infinite}
+@keyframes wig{50%{transform:rotate(-8deg) scale(1.08)}}
+.by{width:fit-content;max-width:100%;margin:0 auto 14px;padding:8px 18px;border-radius:18px;background:linear-gradient(120deg,#f4c95d26,#ffffff10);border:1px solid #f4c95d77;color:var(--gold);font-size:.82rem;font-weight:700;direction:ltr;text-align:center;box-shadow:0 0 22px #f4c95d33}
+.roam{position:fixed;top:0;left:0;z-index:3;pointer-events:none;filter:drop-shadow(0 0 8px #f4c95d99)}
+.roam span{display:inline-block;animation:bob 1.2s ease-in-out infinite alternate}
+@keyframes bob{to{translate:0 -8px}}
+.fab{position:fixed;bottom:78px;left:14px;z-index:10;width:52px;height:52px;margin:0;padding:0;border-radius:50%;font-size:1.5rem;animation:tw 1s infinite alternate}
+.fab.on{animation:none}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important}}
+[hidden]{display:none!important}
 </style>
 </head>
 <body>
-<div class="snow" id="snow" aria-hidden="true"></div>
-<div class="stars" id="stars" aria-hidden="true"></div>
-<div class="lights" id="lights" aria-hidden="true"></div>
-
-<button class="music" id="music" aria-label="تشغيل أو إيقاف الموسيقى" title="الموسيقى">🔇</button>
-<button class="bell" id="bell" aria-label="دق الجرس" title="دوس هنا واسمع الجرس">🔔</button>
-
-<div class="ground" aria-hidden="true">
-  <b>
-    <span>🎄</span><span>⛄</span><span>🎁</span><span>🎄</span>
-    <span>🎅</span><span>🎁</span><span>⛄</span><span>🎄</span>
-  </b>
-</div>
-
+<div class="snow" id="snow"></div>
+<div class="stars" id="stars"></div>
+<div class="lights" id="lights"></div>
+<button class="fab" id="music" aria-label="موسيقى">🔇</button>
+<div class="ground"><b><span>🎄</span><span>⛄</span><span>🎁</span><span>🎄</span><span>🎅</span><span>🎁</span><span>⛄</span><span>🎄</span></b></div>
 <main>
-  <div class="by">
-    💻 CODED WITH LOVE BY
-    <strong>ENGINEER EBRA</strong> 👑
-  </div>
-
-  <div class="hero">
-    <span>🎄</span><span>🎅</span><span>🎄</span>
-  </div>
-
+  <div class="by">💻 Coded with love, caffeine &amp; zero sleep by Software Engineer Ebra</div>
+  <div class="hero"><span>🎄</span><span>🎅</span><span>🎄</span></div>
   <h1>🔋 فرح أخوك الـ5٪</h1>
-
-  <p class="sub">
-    الفرحة لسه <span class="five">5٪</span>..
-    لف الرول عشان توصل 100٪ 🎁🔥
-  </p>
-
-  <div class="progress-wrap">
-    <div class="progress-head">
-      <span>مستوى الفرحة</span>
-      <span id="progressText">5%</span>
-    </div>
-    <div class="progress">
-      <i id="progressBar"></i>
-    </div>
-  </div>
+  <p class="sub">Secret Santa 🎄 الفرحة لسه 5٪.. لف الرول عشان توصل 100٪</p>
 
   <section class="card">
-    <label for="me" style="margin-top:0">🎅 انت مين؟</label>
-
-    <select id="me">
-      <option>تحميل الأسماء...</option>
-    </select>
-
+    <label for="me" style="margin-top:0">انت مين؟</label>
+    <select id="me"></select>
     <button id="spin">لف الرول 🎡</button>
-
-    <div id="wheel" aria-live="polite">؟</div>
+    <div id="wheel">؟</div>
     <div class="msg" id="msg"></div>
   </section>
 
-  <div style="text-align:center">
-    <button class="alt" id="adminBtn">دخول الأدمن</button>
-  </div>
+  <div style="text-align:center"><button class="alt" id="adminBtn">دخول الأدمن</button></div>
 
   <section class="card" id="admin" hidden>
-    <label for="boys" style="margin-top:0">
-      👦 أسماء الولاد (اسم في كل سطر)
-    </label>
-
+    <label for="boys" style="margin-top:0">👦 أسماء الولاد (اسم في كل سطر)</label>
     <textarea id="boys"></textarea>
-
-    <label for="girls">
-      👧 أسماء البنات (اسم في كل سطر)
-    </label>
-
+    <label for="girls">👧 أسماء البنات (اسم في كل سطر)</label>
     <textarea id="girls"></textarea>
-
     <button id="save">حفظ وبدء من جديد</button>
-
     <div class="msg" id="amsg"></div>
     <div id="status"></div>
   </section>
-
-  <footer>
-    Made with 🎄, a little chaos & lots of Christmas magic
-  </footer>
 </main>
 
-<style>
-.snow{
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  overflow:hidden;
-  z-index:1;
-}
-
-.snow i{
-  position:absolute;
-  top:-40px;
-  font-style:normal;
-  color:#fff;
-  text-shadow:0 0 8px #fff;
-  opacity:.9;
-  animation:fall linear forwards;
-}
-
-@keyframes fall{
-  to{transform:translate(var(--x),110vh) rotate(360deg)}
-}
-
-.stars i{
-  position:fixed;
-  width:2px;
-  height:2px;
-  border-radius:50%;
-  background:#fff;
-  box-shadow:0 0 8px #fff;
-  z-index:-1;
-  animation:tw 2s infinite alternate;
-}
-
-.lights{
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  height:22px;
-  display:flex;
-  justify-content:space-around;
-  align-items:flex-start;
-  z-index:8;
-  pointer-events:none;
-  border-top:4px solid #382316;
-}
-
-.lights i{
-  width:10px;
-  height:16px;
-  border-radius:50% 50% 45% 45%;
-  background:var(--c);
-  box-shadow:0 0 14px var(--c);
-  animation:tw 1s infinite alternate;
-}
-
-.lights i:nth-child(3n){--c:#ff4d68}
-.lights i:nth-child(3n+1){--c:#ffd23f}
-.lights i:nth-child(3n+2){
-  --c:#4dd2ff;
-  animation-delay:.5s;
-}
-
-@keyframes tw{
-  to{opacity:.25;filter:brightness(.65)}
-}
-
-.orn{
-  position:fixed;
-  top:0;
-  z-index:4;
-  pointer-events:none;
-  transform-origin:50% 0;
-  animation:swing 3s ease-in-out infinite alternate;
-}
-
-.orn::before{
-  content:"";
-  display:block;
-  width:1px;
-  height:var(--h);
-  background:#ffd76abb;
-  margin:0 auto;
-}
-
-.orn::after{
-  content:"";
-  display:block;
-  width:32px;
-  height:32px;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 35% 30%,#fff9,#0000 35%),
-    var(--c);
-  box-shadow:0 6px 16px #0009,inset -4px -6px 8px #0005;
-}
-
-@keyframes swing{
-  from{transform:rotate(-8deg)}
-  to{transform:rotate(8deg)}
-}
-
-.ground{
-  position:fixed;
-  bottom:0;
-  left:-5%;
-  right:-5%;
-  height:67px;
-  z-index:3;
-  pointer-events:none;
-  background:linear-gradient(#fff,#cfe0f2);
-  border-radius:50% 50% 0 0/40px 40px 0 0;
-  box-shadow:0 -6px 32px #ffffff55;
-}
-
-.ground b{
-  position:absolute;
-  top:-39px;
-  left:4%;
-  right:4%;
-  display:flex;
-  justify-content:space-around;
-  font-size:2.35rem;
-  font-weight:400;
-  direction:ltr;
-}
-
-.roam{
-  position:fixed;
-  top:0;
-  left:0;
-  z-index:5;
-  pointer-events:none;
-  filter:drop-shadow(0 0 9px #ffd76aaa);
-}
-
-.roam span{
-  display:inline-block;
-  animation:bob 1.2s ease-in-out infinite alternate;
-}
-
-@keyframes bob{
-  to{translate:0 -9px}
-}
-
-/* زر الجرس */
-.bell{
-  position:fixed;
-  left:15px;
-  bottom:83px;
-  z-index:12;
-  width:58px;
-  height:58px;
-  margin:0;
-  padding:0;
-  border-radius:50%;
-  font-size:1.7rem;
-  display:grid;
-  place-items:center;
-  background:
-    radial-gradient(circle at 35% 25%,#fff3,#0000 35%),
-    linear-gradient(145deg,#ffe99b,#c88713);
-  color:#492900;
-  border:2px solid #fff0b2;
-  box-shadow:0 0 0 5px #ffd76a20,0 0 28px #ffd76a99;
-  animation:bellFloat 2s ease-in-out infinite,bellGlow 2.5s infinite alternate;
-}
-
-.bell:hover{
-  transform:translateY(-4px) rotate(-12deg);
-}
-
-.bell.ring{
-  animation:ring .55s ease-in-out;
-}
-
-@keyframes bellFloat{
-  50%{translate:0 -7px}
-}
-
-@keyframes bellGlow{
-  to{
-    box-shadow:0 0 0 8px #ffd76a10,0 0 38px #ffd76acc;
-  }
-}
-
-@keyframes ring{
-  0%,100%{transform:rotate(0)}
-  15%{transform:rotate(18deg)}
-  30%{transform:rotate(-16deg)}
-  45%{transform:rotate(13deg)}
-  60%{transform:rotate(-10deg)}
-  75%{transform:rotate(6deg)}
-}
-
-/* زر الموسيقى */
-.music{
-  position:fixed;
-  right:15px;
-  bottom:83px;
-  z-index:12;
-  width:58px;
-  height:58px;
-  margin:0;
-  padding:0;
-  border-radius:50%;
-  font-size:1.45rem;
-  background:linear-gradient(145deg,#164f51,#092b38);
-  color:#ffe69b;
-  border:1px solid #6fffe1;
-  box-shadow:0 0 22px #4ff0c255;
-}
-
-.music.on{
-  background:linear-gradient(145deg,#087e70,#0b3c45);
-  box-shadow:0 0 30px #4ff0c288;
-}
-
-footer{
-  text-align:center;
-  color:#a9c4ba;
-  font-size:.78rem;
-  margin:20px 0 0;
-}
-
-@media(max-width:420px){
-  body{padding:72px 12px 140px}
-  .card{padding:19px;border-radius:23px}
-  .by{font-size:.85rem;padding:9px 12px}
-  .by strong{font-size:1.55rem}
-  .hero span:nth-child(2){font-size:3.9rem}
-  .ground b{font-size:1.85rem}
-}
-
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{
-    animation:none!important;
-    scroll-behavior:auto!important;
-  }
-}
-
-[hidden]{display:none!important}
-</style>
 <script type="module">
 import {initializeApp} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {getDatabase, ref, onValue, set, runTransaction} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-import {
-  getDatabase,
-  ref,
-  onValue,
-  set,
-  runTransaction
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-// ====== إعدادات Firebase الأصلية ======
+// ====== عدّل هنا ======
 const firebaseConfig = {
-  apiKey: "AIzaSyC9-9B4h1PYPzdOhZRjCor9ZeXsAm1_J8",
+  apiKey: "AIzaSyC9-9B4h1PYPzdOhZRjCor9ZeXsAm1_JL8",
   authDomain: "secret-santa-8c4fa.firebaseapp.com",
   databaseURL: "https://secret-santa-8c4fa-default-rtdb.firebaseio.com",
   projectId: "secret-santa-8c4fa",
   appId: "1:218179764126:web:4abbe5b9a7c62fbfe8608f"
 };
-
 const ADMIN_PASS = "1234";
-// =====================================
+// ======================
 
 const db = getDatabase(initializeApp(firebaseConfig));
 const root = ref(db, "santa");
-
 const $ = id => document.getElementById(id);
-
-// الإضاءات والنجوم
-$("lights").innerHTML = "<i></i>".repeat(22);
-
-$("stars").innerHTML = Array.from(
-  {length:75},
-  () => `<i style="left:${Math.random()*100}%;top:${Math.random()*78}%;animation-delay:${Math.random()*2}s"></i>`
-).join("");
-
-// الزينة المعلقة
-[
-  ["3%","#ff425d",75,0],
-  ["12%","#ffd76a",45,.6],
-  ["87%","#4ff0c2",55,.3],
-  ["97%","#a66bff",90,.9]
-].forEach(([l,c,h,d]) => {
+$("lights").innerHTML = "<i></i>".repeat(18);
+$("stars").innerHTML = Array.from({length: 60}, () => `<i style="left:${Math.random() * 100}%;top:${Math.random() * 70}%;animation-delay:${Math.random() * 2}s"></i>`).join("");
+[["3%","#d62839",70,0],["11%","#f4c95d",40,.6],["88%","#2ec4b6",50,.3],["96%","#9b5de5",85,.9]].forEach(([l, c, h, d]) => {
   const e = document.createElement("div");
   e.className = "orn";
   e.style.cssText = `left:${l};--c:${c};--h:${h}px;animation-delay:${d}s`;
   document.body.appendChild(e);
 });
-
-const calm = matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-// الثلوج
-const flake = (ch="❄") => {
-  if(calm) return;
-
+const flake = (ch = "❄") => {
   const e = document.createElement("i");
   e.textContent = ch;
-
-  e.style.cssText = `
-    left:${Math.random()*100}%;
-    font-size:${10+Math.random()*18}px;
-    animation-duration:${6+Math.random()*8}s;
-    --x:${Math.random()*100-50}px
-  `;
-
+  e.style.cssText = `left:${Math.random() * 100}%;font-size:${10 + Math.random() * 16}px;animation-duration:${6 + Math.random() * 8}s;--x:${Math.random() * 80 - 40}px`;
   $("snow").appendChild(e);
   e.onanimationend = () => e.remove();
 };
-
-if(!calm) {
-  setInterval(() => flake(),220);
-}
-
-// احتفالات السحب
-const party = () => {
-  if(calm) return;
-
-  ["🎉","✨","🎁","⭐","🎄","💛"].forEach((c,k) => {
-    for(let i=0;i<9;i++) {
-      setTimeout(() => flake(c),(k*9+i)*48);
-    }
-  });
-};
-
-// شخصيات متحركة
-[["🎅",2.8],["🦌",2.1],["🦌",1.8],["🦌",2.3]]
-.forEach(([ch,sz],k) => {
-
-  const o = document.createElement("div");
-  const i = document.createElement("span");
-
-  i.textContent = ch;
-  i.style.fontSize = sz+"rem";
-  i.style.animationDelay = k*.3+"s";
-
-  o.className = "roam";
-  o.appendChild(i);
-
-  document.body.appendChild(o);
-
-  let x = Math.random()*Math.max(1,innerWidth-60);
-
-  o.style.transform = `translate(${x}px,${60+Math.random()*Math.max(1,innerHeight-200)}px)`;
-
+const calm = matchMedia("(prefers-reduced-motion:reduce)").matches;
+if (!calm) setInterval(flake, 250);
+const party = () => { if (!calm) ["🎉","✨","🎁","⭐","🎄"].forEach((c, k) => { for (let i = 0; i < 8; i++) setTimeout(() => flake(c), (k * 8 + i) * 60); }); };
+[["🎅",2.8],["🦌",2.1],["🦌",1.8],["🦌",2.3]].forEach(([ch, sz], k) => {
+  const o = document.createElement("div"), i = document.createElement("span");
+  i.textContent = ch; i.style.fontSize = sz + "rem"; i.style.animationDelay = k * .3 + "s";
+  o.className = "roam"; o.appendChild(i); document.body.appendChild(o);
+  let x = Math.random() * (innerWidth - 60);
+  o.style.transform = `translate(${x}px,${60 + Math.random() * (innerHeight - 200)}px)`;
   const go = () => {
-    const nx = Math.random()*Math.max(1,innerWidth-60);
-    const ny = 50+Math.random()*Math.max(1,innerHeight-190);
-    const t = 5+Math.random()*6;
-
+    const nx = Math.random() * (innerWidth - 60), ny = 50 + Math.random() * (innerHeight - 190), t = 5 + Math.random() * 6;
     o.style.transition = `transform ${t}s ease-in-out`;
     o.style.transform = `translate(${nx}px,${ny}px)`;
-
-    if(ch==="🦌") {
-      i.style.transform = nx>x ? "scaleX(-1)" : "none";
-    }
-
-    x=nx;
-    setTimeout(go,t*1000);
+    if (ch === "🦌") i.style.transform = nx > x ? "scaleX(-1)" : "none";
+    x = nx;
+    setTimeout(go, t * 1000);
   };
-
-  if(!calm) setTimeout(go,150+k*450);
+  if (!calm) setTimeout(go, 100 + k * 500);
 });
-
-// ==========================================
-// موسيقى Christmas أصلية بأجراس وأوركسترا
-// ==========================================
-
-const musicBtn = $("music");
-const bellBtn = $("bell");
-
-let audio = null;
-let musicOn = false;
-let musicTimer = null;
-let musicNodes = [];
-
-const NOTE = {
-  C:261.63,
-  D:293.66,
-  E:329.63,
-  F:349.23,
-  G:392,
-  A:440,
-  B:493.88,
-
-  C5:523.25,
-  D5:587.33,
-  E5:659.25,
-  F5:698.46,
-  G5:783.99,
-  A5:880,
-  B5:987.77,
-
-  C6:1046.5,
-  D6:1174.66,
-  E6:1318.5
-};
-
-const ensureAudio = () => {
-  if(!audio) {
-    audio = new (
-      window.AudioContext ||
-      window.webkitAudioContext
-    )();
-  }
-
-  if(audio.state==="suspended") {
-    audio.resume();
-  }
-};
-
-// تشغيل نغمة
-function tone(
-  freq,
-  start,
-  duration,
-  type="sine",
-  volume=.08,
-  attack=.025,
-  decay=true
-) {
-
-  const osc = audio.createOscillator();
-  const gain = audio.createGain();
-
-  osc.type = type;
-
-  osc.frequency.setValueAtTime(freq,start);
-
-  gain.gain.setValueAtTime(.0001,start);
-
-  gain.gain.linearRampToValueAtTime(
-    volume,
-    start+attack
-  );
-
-  if(decay) {
-    gain.gain.exponentialRampToValueAtTime(
-      .0001,
-      start+duration
-    );
-  }
-
-  osc.connect(gain).connect(audio.destination);
-
-  osc.start(start);
-  osc.stop(start+duration+.03);
-
-  musicNodes.push(osc);
-}
-
-// صوت الجرس الموسيقي
-function bellTone(
-  freq,
-  start,
-  duration=.85,
-  volume=.055
-) {
-
-  tone(freq,start,duration,"sine",volume,.008,true);
-
-  tone(
-    freq*2.01,
-    start,
-    duration*.55,
-    "sine",
-    volume*.27,
-    .008,
-    true
-  );
-
-  tone(
-    freq*3,
-    start+.012,
-    duration*.32,
-    "sine",
-    volume*.11,
-    .008,
-    true
-  );
-}
-
-// لحن أطول
-const melody = [
-  ["E5",.34],["E5",.34],["E5",.68],
-  ["E5",.34],["E5",.34],["E5",.68],
-  ["E5",.34],["G5",.34],["C5",.48],
-  ["D5",.18],["E5",.9],["F5",.34],
-  ["F5",.34],["F5",.48],["F5",.18],
-  ["F5",.34],["E5",.34],["E5",.34],
-  ["E5",.34],["E5",.34],["D5",.34],
-  ["D5",.34],["E5",.34],["D5",.68],
-  ["G5",.68],
-
-  ["E5",.34],["E5",.34],["E5",.68],
-  ["E5",.34],["E5",.34],["E5",.68],
-  ["E5",.34],["G5",.34],["C5",.34],
-  ["D5",.34],["E5",.9],["F5",.34],
-  ["F5",.34],["F5",.34],["F5",.34],
-  ["F5",.34],["E5",.34],["E5",.34],
-  ["E5",.34],["E5",.34],["G5",.34],
-  ["G5",.34],["F5",.34],["D5",.34],
-  ["C5",.9]
-];
-
-// الكوردات الموسيقية
-const chords = [
-  {notes:["C","E","G"],bass:"C",len:2.72},
-  {notes:["F","A","C5"],bass:"F",len:2.72},
-  {notes:["G","B","D5"],bass:"G",len:2.72},
-  {notes:["C","E","G"],bass:"C",len:2.72},
-  {notes:["A","C5","E5"],bass:"A",len:2.72},
-  {notes:["D","F","A"],bass:"D",len:2.72},
-  {notes:["G","B","D5"],bass:"G",len:2.72},
-  {notes:["C","E","G"],bass:"C",len:2.72}
-];
-
-// تشغيل الموسيقى بشكل مستمر
-function scheduleMusic() {
-
-  if(!musicOn || !audio) return;
-
-  let t = audio.currentTime+.12;
-  let cursor = t;
-
-  melody.forEach(([n,d],idx) => {
-
-    const f = NOTE[n];
-
-    tone(
-      f,
-      cursor,
-      d*.9,
-      "triangle",
-      .035,
-      .018,
-      true
-    );
-
-    if(idx%2===0) {
-      bellTone(f*2,cursor+.015,.62,.018);
-    }
-
-    cursor+=d;
-  });
-
-  let chordTime=t;
-
-  chords.forEach((ch,idx) => {
-
-    ch.notes.forEach(n => {
-      tone(
-        NOTE[n],
-        chordTime,
-        ch.len*.92,
-        "sine",
-        .018,
-        .12,
-        true
-      );
+// موسيقى Jingle Bells (لحن قديم متاح للجميع) بتتولد من المتصفح مباشرة
+const mus = $("music"), HZ = {C: 261.63, D: 293.66, E: 329.63, F: 349.23, G: 392};
+const tune = "E1 E1 E2 E1 E1 E2 E1 G1 C1.5 D.5 E4 F1 F1 F1.5 F.5 F1 E1 E1 E.5 E.5 E1 D1 D1 E1 D2 G2".split(" ");
+let ac, on = false, loopT;
+const playLoop = () => {
+  let t = ac.currentTime + .05;
+  tune.forEach(tok => {
+    const f = HZ[tok[0]], d = parseFloat(tok.slice(1)) * .34;
+    [[f, "triangle", .5], [f * 2, "sine", .25]].forEach(([fr, ty, v]) => {
+      const o = ac.createOscillator(), g = ac.createGain();
+      o.type = ty; o.frequency.value = fr;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(v * .18, t + .02);
+      g.gain.exponentialRampToValueAtTime(.001, t + d * .95);
+      o.connect(g).connect(ac.destination);
+      o.start(t); o.stop(t + d);
     });
-
-    tone(
-      NOTE[ch.bass]/2,
-      chordTime,
-      ch.len*.9,
-      "triangle",
-      .045,
-      .08,
-      true
-    );
-
-    for(let beat=0;beat<4;beat++) {
-      bellTone(
-        NOTE[["C5","E5","G5","E5"][beat]],
-        chordTime+beat*.66,
-        .48,
-        .012
-      );
-    }
-
-    chordTime+=ch.len;
+    t += d;
   });
+  loopT = setTimeout(playLoop, (t - ac.currentTime + 1.2) * 1000);
+};
+const toggle = () => {
+  on = !on;
+  if (on) { ac = new (window.AudioContext || window.webkitAudioContext)(); playLoop(); }
+  else { clearTimeout(loopT); ac.close(); }
+  mus.textContent = on ? "🔔" : "🔇";
+  mus.classList.toggle("on", on);
+};
+mus.onclick = toggle;
+addEventListener("pointerdown", e => { if (!on && !e.target.closest("#music")) toggle(); }, {once: true});
+let data = {}, busy = false;
+const saved = () => { try { return JSON.parse(localStorage.getItem("santa") || "null"); } catch { return null; } };
 
-  const duration=Math.max(cursor,chordTime)-t;
-
-  musicTimer=setTimeout(
-    scheduleMusic,
-    Math.max(1000,(duration+.5)*1000)
-  );
-}
-
-// زر تشغيل وإيقاف الموسيقى
-musicBtn.addEventListener("click",() => {
-
-  ensureAudio();
-
-  musicOn=!musicOn;
-
-  if(musicOn) {
-
-    musicBtn.textContent="🔊";
-    musicBtn.classList.add("on");
-
-    scheduleMusic();
-
-  } else {
-
-    clearTimeout(musicTimer);
-
-    musicNodes.forEach(n => {
-      try { n.stop(); } catch {}
-    });
-
-    musicNodes=[];
-
-    musicBtn.textContent="🔇";
-    musicBtn.classList.remove("on");
-  }
-});
-
-// ==========================================
-// الجرس الذهبي الذي يمكن الضغط عليه
-// ==========================================
-
-function ringBell() {
-
-  ensureAudio();
-
-  const now=audio.currentTime+.015;
-
-  [NOTE.E6,NOTE.C6,NOTE.G5].forEach((f,i) => {
-    bellTone(f,now+i*.12,1.05,.075);
-  });
-
-  bellBtn.classList.remove("ring");
-
-  void bellBtn.offsetWidth;
-
-  bellBtn.classList.add("ring");
-
-  setTimeout(() => {
-    bellBtn.classList.remove("ring");
-  },650);
-}
-
-bellBtn.addEventListener("click",ringBell);
-
-// ==========================================
-// نظام Secret Santa الأصلي
-// ==========================================
-
-// الولد يأخذ بنت فقط
-// البنت تأخذ أي شخص ما عدا نفسها
-
-const allowed = (u,v,g) =>
-  u!==v && (g[u]!=="b" || g[v]==="g");
-
-// التأكد من وجود توزيع ممكن
-const matchable = (givers,recv,g) => {
-
-  const m={};
-
-  const go=(u,seen) => {
-
-    for(const v of recv) {
-
-      if(!allowed(u,v,g) || seen[v]) continue;
-
-      seen[v]=1;
-
-      if(!m[v] || go(m[v],seen)) {
-        m[v]=u;
-        return true;
-      }
+// الولد ياخد بنت بس، والبنت ياخد أي حد غير نفسها
+const allowed = (u, v, g) => u !== v && (g[u] !== "b" || g[v] === "g");
+// يتأكد إن لسه فيه توزيع ممكن لباقي الناس (عشان محدش يعلق في الآخر)
+const matchable = (givers, recv, g) => {
+  const m = {};
+  const go = (u, seen) => {
+    for (const v of recv) {
+      if (!allowed(u, v, g) || seen[v]) continue;
+      seen[v] = 1;
+      if (!m[v] || go(m[v], seen)) { m[v] = u; return true; }
     }
-
     return false;
   };
-
-  return givers.every(u => go(u,{}));
+  return givers.every(u => go(u, {}));
 };
 
-let data={};
-let busy=false;
-
-// حفظ النتيجة على جهاز المشارك
-const saved = () => {
-  try {
-    return JSON.parse(
-      localStorage.getItem("santa") || "null"
-    );
-  } catch {
-    return null;
-  }
-};
-
-// حماية الأسماء من HTML
-function escapeHtml(value) {
-
-  return String(value).replace(/[&<>"']/g,c => ({
-    "&":"&amp;",
-    "<":"&lt;",
-    ">":"&gt;",
-    '"':"&quot;",
-    "'":"&#39;"
-  }[c]));
-}
-
-// تحديث الموقع
 function render() {
-
-  const names=data.names||[];
-  const done=data.done||{};
-  const g=data.g||{};
-
-  const left=names.filter(n => !done[n]);
-
-  $("me").innerHTML=left.length
-    ? left.map(n =>
-        `<option value="${escapeHtml(n)}">${escapeHtml(n)}</option>`
-      ).join("")
-    : "<option>— كله لف —</option>";
-
-  $("spin").disabled=busy || !left.length;
-
-  // عداد الفرحة
-  const total=names.length;
-
-  const completed=Object.keys(done)
-    .filter(n => done[n]).length;
-
-  const percent=total
-    ? Math.min(100,Math.round(5+95*completed/total))
-    : 5;
-
-  $("progressBar").style.width=percent+"%";
-  $("progressText").textContent=percent+"%";
-
-  // النتيجة المحفوظة
-  let s=saved();
-
-  if(s && s.round!==data.round) {
-
-    localStorage.removeItem("santa");
-
-    s=null;
-
-    $("wheel").className="";
-    $("wheel").textContent="؟";
-    $("msg").textContent="";
+  const names = data.names || [], done = data.done || {}, g = data.g || {};
+  const left = names.filter(n => !done[n]);
+  $("me").innerHTML = left.length ? left.map(n => `<option>${n}</option>`).join("") : "<option>— كله لف —</option>";
+  $("spin").disabled = busy || !left.length;
+  let s = saved();
+  if (s && s.round !== data.round) {
+    localStorage.removeItem("santa"); s = null;
+    $("wheel").className = ""; $("wheel").textContent = "؟"; $("msg").textContent = "";
   }
-
-  if(s && !busy) {
-
-    $("wheel").className="win";
-    $("wheel").textContent=s.pick;
-
-    $("msg").textContent=
-      `يا ${s.me}، هديتك لـ ${s.pick} 🤫 متقولش لحد!`;
+  if (s && !busy) {
+    $("wheel").className = "win";
+    $("wheel").textContent = s.pick;
+    $("msg").textContent = `يا ${s.me}، هديتك لـ ${s.pick} 🤫 متقولش لحد!`;
   }
-
-  // حالة المشاركين للأدمن
-  $("status").innerHTML=names.map(n => `
-    <span class="tag ${done[n]?"ok":""}">
-      ${g[n]==="b"?"👦":"👧"}
-      ${escapeHtml(n)}
-      ${done[n]?"✓":""}
-    </span>
-  `).join("");
+  $("status").innerHTML = names.map(n => `<span class="tag ${done[n] ? "ok" : ""}">${g[n] === "b" ? "👦" : "👧"} ${n} ${done[n] ? "✓" : ""}</span>`).join("");
 }
+onValue(root, snap => { data = snap.val() || {}; render(); });
 
-// الاتصال بقاعدة البيانات
-onValue(root,snap => {
-
-  data=snap.val()||{};
-
-  render();
-
-},error => {
-
-  $("me").innerHTML=
-    '<option>تعذر تحميل الأسماء</option>';
-
-  $("msg").textContent=
-    "في مشكلة في الاتصال بقاعدة البيانات. راجع اتصال الإنترنت.";
-
-  console.error(error);
-});
-
-// ==========================================
-// زر السحب
-// ==========================================
-
-$("spin").onclick=async() => {
-
-  const me=$("me").value;
-
-  if(!me || busy) return;
-
-  busy=true;
-
-  $("spin").disabled=true;
-  $("msg").textContent="";
-
-  const w=$("wheel");
-
-  w.className="spin";
-
-  // حركة الرول
-  const timer=setInterval(() => {
-
-    const pool=(data.pool||[])
-      .filter(n => allowed(me,n,data.g||{}));
-
-    w.textContent=
-      pool[Math.floor(Math.random()*pool.length)] || "🎁";
-
-  },85);
-
+$("spin").onclick = async () => {
+  const me = $("me").value;
+  if (!me || busy) return;
+  busy = true; $("spin").disabled = true; $("msg").textContent = "";
+  const g0 = data.g || {};
+  const pool = (data.pool || []).filter(n => allowed(me, n, g0));
+  const w = $("wheel"); w.className = "spin";
+  const timer = setInterval(() => { w.textContent = pool[Math.floor(Math.random() * pool.length)] || "؟"; }, 90);
   try {
-
-    const [res]=await Promise.all([
-
-      runTransaction(root,d => {
-
-        if(!d) return d;
-
-        const p=d.pool||[];
-        const done=d.done||{};
-        const g=d.g||{};
-
-        if(done[me]) return;
-
-        const rest=(d.names||[])
-          .filter(n => !done[n] && n!==me);
-
-        const opts=p.filter(v =>
-          allowed(me,v,g) &&
-          matchable(rest,p.filter(x => x!==v),g)
-        );
-
-        if(!opts.length) return;
-
-        const pick=opts[
-          Math.floor(Math.random()*opts.length)
-        ];
-
-        d.pool=p.filter(n => n!==pick);
-
-        d.done={
-          ...done,
-          [me]:true
-        };
-
-        d.results={
-          ...(d.results||{}),
-          [me]:pick
-        };
-
+    const [res] = await Promise.all([
+      runTransaction(root, d => {
+        if (!d) return d;
+        const p = d.pool || [], done = d.done || {}, g = d.g || {};
+        if (done[me]) return;
+        const rest = (d.names || []).filter(n => !done[n] && n !== me);
+        const opts = p.filter(v => allowed(me, v, g) && matchable(rest, p.filter(x => x !== v), g));
+        if (!opts.length) return;
+        const pick = opts[Math.floor(Math.random() * opts.length)];
+        d.pool = p.filter(n => n !== pick);
+        d.done = {...done, [me]: true};
+        d.results = {...(d.results || {}), [me]: pick};
         return d;
       }),
-
-      new Promise(r => setTimeout(r,2800))
-
+      new Promise(r => setTimeout(r, 2500))
     ]);
-
     clearInterval(timer);
-
-    if(res.committed) {
-
+    if (res.committed) {
       party();
-
-      const finalData=res.snapshot.val();
-
-      localStorage.setItem(
-        "santa",
-        JSON.stringify({
-          me,
-          pick:finalData.results[me],
-          round:finalData.round
-        })
-      );
-
-      ringBell();
-
+      localStorage.setItem("santa", JSON.stringify({me, pick: res.snapshot.val().results[me], round: res.snapshot.val().round}));
     } else {
-
-      w.className="";
-      w.textContent="؟";
-
-      $("msg").textContent=
-        "مقدرناش نسحب لك اسم. كلم الأدمن.";
+      w.className = ""; w.textContent = "؟";
+      $("msg").textContent = "مقدرناش نسحب لك اسم. كلم الأدمن.";
     }
-
-  } catch(e) {
-
-    clearInterval(timer);
-
-    w.className="";
-    w.textContent="؟";
-
-    $("msg").textContent=
-      "حصل خطأ في الاتصال، جرب تاني.";
-
-    console.error(e);
+  } catch (e) {
+    clearInterval(timer); w.className = ""; w.textContent = "؟";
+    $("msg").textContent = "حصل خطأ في الاتصال، جرب تاني.";
   }
-
-  busy=false;
-
-  render();
+  busy = false; render();
 };
 
-// ==========================================
-// الأدمن - نفس الباسورد ونفس النظام الأصلي
-// ==========================================
-
-$("adminBtn").onclick=() => {
-
-  if(prompt("باسورد الأدمن:")===ADMIN_PASS) {
-
-    $("admin").hidden=false;
-
-    const names=data.names||[];
-    const g=data.g||{};
-
-    $("boys").value=
-      names.filter(n => g[n]==="b").join("\n");
-
-    $("girls").value=
-      names.filter(n => g[n]!=="b").join("\n");
+$("adminBtn").onclick = () => {
+  if (prompt("باسورد الأدمن:") === ADMIN_PASS) {
+    $("admin").hidden = false;
+    const names = data.names || [], g = data.g || {};
+    $("boys").value = names.filter(n => g[n] === "b").join("\n");
+    $("girls").value = names.filter(n => g[n] !== "b").join("\n");
   }
 };
 
-// تنظيف الأسماء
-const clean=t => [
-  ...new Set(
-    t.split("\n")
-    .map(n => n.replace(/[.$#\[\]\/]/g,"").trim())
-    .filter(Boolean)
-  )
-];
-
-// حفظ المشاركين وإعادة بدء السحب
-$("save").onclick=async() => {
-
-  const boys=clean($("boys").value);
-
-  const girls=clean($("girls").value)
-    .filter(n => !boys.includes(n));
-
-  const names=[...boys,...girls];
-
-  const g={};
-
-  boys.forEach(n => g[n]="b");
-  girls.forEach(n => g[n]="g");
-
-  if(names.length<2 || !matchable(names,names,g)) {
-
-    $("amsg").textContent=
-      "التوزيع مش ممكن: لازم عدد البنات يساوي عدد الولاد أو يزيد عليه.";
-
+const clean = t => [...new Set(t.split("\n").map(n => n.replace(/[.$#\[\]\/]/g, "").trim()).filter(Boolean))];
+$("save").onclick = async () => {
+  const boys = clean($("boys").value);
+  const girls = clean($("girls").value).filter(n => !boys.includes(n));
+  const names = [...boys, ...girls], g = {};
+  boys.forEach(n => g[n] = "b"); girls.forEach(n => g[n] = "g");
+  if (names.length < 2 || !matchable(names, names, g)) {
+    $("amsg").textContent = "التوزيع مش ممكن: لازم عدد البنات يساوي عدد الولاد أو يزيد عليه.";
     return;
   }
-
-  if(!confirm("ده هيمسح أي سحب قديم. متأكد؟")) {
-    return;
-  }
-
-  try {
-
-    await set(root,{
-      names,
-      g,
-      pool:names,
-      done:{},
-      round:Date.now()
-    });
-
-    localStorage.removeItem("santa");
-
-    $("wheel").className="";
-    $("wheel").textContent="؟";
-    $("msg").textContent="";
-
-    $("amsg").textContent="تم الحفظ ✅";
-
-    party();
-
-  } catch(e) {
-
-    $("amsg").textContent=
-      "محصلش حفظ. اتأكد من الاتصال وحاول تاني.";
-
-    console.error(e);
-  }
+  if (!confirm("ده هيمسح أي سحب قديم. متأكد؟")) return;
+  await set(root, {names, g, pool: names, done: {}, round: Date.now()});
+  localStorage.removeItem("santa");
+  $("wheel").className = ""; $("wheel").textContent = "؟"; $("msg").textContent = "";
+  $("amsg").textContent = "تم الحفظ ✅";
 };
-
 </script>
-
 </body>
 </html>
