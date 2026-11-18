@@ -644,7 +644,7 @@ async function startFirebase() {
       failed = true;
       setNet("⚠️ تعذر الاتصال بقاعدة البيانات: " + error.message);
       render();
-    });
+    }); 
 
   } catch (e) {
     console.error(e);
