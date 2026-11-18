@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>فرح أخوك الـ5٪ 🔋 Secret Santa</title>
+<title>محاسبين اوسكار في مهمه سريه 🤫👻 Secret Santa</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Lalezar&display=swap" rel="stylesheet">
 <style>
 :root{--gold:#f4c95d;--ink:#fdf6e3;--mut:#a9c4ba}
@@ -12,8 +12,9 @@ body{margin:0;min-height:100vh;color:var(--ink);font-family:Cairo,system-ui,sans
 body::before{content:"";position:fixed;inset:0;z-index:-2;background:radial-gradient(60% 50% at 20% 10%,#14634f88,#0000),radial-gradient(50% 40% at 85% 25%,#5b2a8c55,#0000),radial-gradient(70% 60% at 50% 110%,#0c3b30,#0000),linear-gradient(#06121c,#0a2230);animation:aur 18s ease-in-out infinite alternate}
 @keyframes aur{to{filter:hue-rotate(25deg) brightness(1.2)}}
 main{width:100%;max-width:460px;position:relative;z-index:1}
-h1{font-family:Lalezar,Cairo,sans-serif;font-weight:400;font-size:2.7rem;line-height:1.2;text-align:center;margin:6px 0 2px;background:linear-gradient(100deg,#fff1b8,#f4c95d 35%,#c98a1b 55%,#ffe9a0 75%,#f4c95d);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite;filter:drop-shadow(0 4px 14px #f4c95d44)}
+h1{font-family:Lalezar,Cairo,sans-serif;font-weight:400;font-size:2.3rem;line-height:1.2;text-align:center;margin:6px 0 2px;background:linear-gradient(100deg,#fff1b8,#f4c95d 35%,#c98a1b 55%,#ffe9a0 75%,#f4c95d);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 6s linear infinite;filter:drop-shadow(0 4px 14px #f4c95d44)}
 @keyframes shine{to{background-position:200% center}}
+.ghosts{text-align:center;font-size:2rem;margin:0 0 6px;direction:ltr;filter:drop-shadow(0 4px 10px #f4c95d55)}
 .sub{text-align:center;color:var(--mut);margin:0 0 26px;font-size:.98rem}
 .net{margin:0 0 16px;padding:10px 14px;border-radius:14px;background:#b3131f55;border:1px solid #ef4b5b;text-align:center;font-weight:700;font-size:.9rem;white-space:pre-line;word-break:break-word}
 .card{position:relative;background:linear-gradient(160deg,#ffffff1c,#ffffff08);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);border:1px solid #f4c95d55;border-radius:28px;padding:22px;margin-bottom:18px;box-shadow:0 20px 50px #0008,inset 0 1px 0 #ffffff33,0 0 40px #f4c95d1a}
@@ -62,7 +63,9 @@ button:disabled{opacity:.45;cursor:not-allowed}
 @keyframes wig{50%{transform:rotate(-8deg) scale(1.08)}}
 .by{width:fit-content;max-width:100%;margin:0 auto 14px;padding:8px 18px;border-radius:18px;background:linear-gradient(120deg,#f4c95d26,#ffffff10);border:1px solid #f4c95d77;color:var(--gold);font-size:.82rem;font-weight:700;direction:ltr;text-align:center;box-shadow:0 0 22px #f4c95d33}
 .roam{position:fixed;top:0;left:0;z-index:3;pointer-events:none;filter:drop-shadow(0 0 8px #f4c95d99)}
+.roam{text-align:center}
 .roam span{display:inline-block;animation:bob 1.2s ease-in-out infinite alternate}
+.roam.me span{font-family:Cairo,system-ui,sans-serif;font-weight:900;direction:ltr;white-space:nowrap;color:var(--gold);background:#06121ccc;border:1px solid #f4c95d99;border-radius:99px;padding:4px 14px;box-shadow:0 0 18px #f4c95d66}
 @keyframes bob{to{translate:0 -8px}}
 .fab{position:fixed;bottom:78px;left:14px;z-index:10;width:52px;height:52px;margin:0;padding:0;border-radius:50%;font-size:1.5rem;animation:tw 1s infinite alternate}
 .fab.on{animation:none}
@@ -79,7 +82,8 @@ button:disabled{opacity:.45;cursor:not-allowed}
 <main>
   <div class="by">💻 Coded with love, caffeine &amp; zero sleep by Software Engineer Ebra</div>
   <div class="hero"><span>🎄</span><span>🎅</span><span>🎄</span></div>
-  <h1>🔋 فرح أخوك الـ5٪</h1>
+  <h1>محاسبين اوسكار في مهمه سريه</h1>
+  <div class="ghosts">🤫👻</div>
   <p class="sub">Secret Santa 🎄 الفرحة لسه 5٪.. لف الرول عشان توصل 100٪</p>
   <div class="net" id="net" hidden></div>
 
@@ -160,14 +164,15 @@ const flake = (ch = "❄") => {
 const calm = matchMedia("(prefers-reduced-motion:reduce)").matches;
 if (!calm) setInterval(flake, 250);
 const party = () => { if (!calm) ["🎉","✨","🎁","⭐","🎄"].forEach((c, k) => { for (let i = 0; i < 8; i++) setTimeout(() => flake(c), (k * 8 + i) * 60); }); };
-[["🎅",2.8],["🦌",2.1],["🦌",1.8],["🦌",2.3]].forEach(([ch, sz], k) => {
+[["🎅",2.8],["🦌",2.1],["🦌",1.8],["🦌",2.3],["ENG.Ebra💻",1.15]].forEach(([ch, sz], k) => {
   const o = document.createElement("div"), i = document.createElement("span");
   i.textContent = ch; i.style.fontSize = sz + "rem"; i.style.animationDelay = k * .3 + "s";
-  o.className = "roam"; o.appendChild(i); document.body.appendChild(o);
-  let x = Math.random() * (innerWidth - 60);
+  o.className = "roam" + (ch[0] === "E" ? " me" : ""); o.appendChild(i);
+  document.body.appendChild(o);
+  let x = Math.random() * (innerWidth - (ch[0] === "E" ? 170 : 60));
   o.style.transform = `translate(${x}px,${60 + Math.random() * (innerHeight - 200)}px)`;
   const go = () => {
-    const nx = Math.random() * (innerWidth - 60), ny = 50 + Math.random() * (innerHeight - 190), t = 5 + Math.random() * 6;
+    const nx = Math.random() * (innerWidth - (ch[0] === "E" ? 170 : 60)), ny = 50 + Math.random() * (innerHeight - 190), t = 5 + Math.random() * 6;
     o.style.transition = `transform ${t}s ease-in-out`;
     o.style.transform = `translate(${nx}px,${ny}px)`;
     if (ch === "🦌") i.style.transform = nx > x ? "scaleX(-1)" : "none";
@@ -325,338 +330,4 @@ function render() {
     }
     $("spin").disabled = busy || !ready || !!done[s.me];
   }
-  $("status").innerHTML = names.map(n => `<span class="tag ${done[n] ? "ok" : ""}">${g[n] === "b" ? "👦" : "👧"} ${esc(n)} ${done[n] ? "✓" : ""}</span>`).join("");
-  if (!$("admin").hidden) showCodes();
-}
-
-$("enter").onclick = () => login($("code").value);
-$("code").onkeydown = e => { if (e.key === "Enter") login($("code").value); };
-$("logout").onclick = () => { localStorage.removeItem("santa_me"); render(); };
-
-$("spin").onclick = async () => {
-  const s = getSession();
-  if (!s || busy) return;
-  if (!ready) { $("msg").textContent = noNet(); return; }
-  const me = s.me;
-if ((data.done || {})[me]) return;
-
-  busy = true;
-  $("spin").disabled = true;
-  $("msg").textContent = "";
-
-  const g0 = data.g || {};
-  const pool = (data.pool || []).filter(n => allowed(me, n, g0));
-  const w = $("wheel");
-  w.className = "spin";
-
-  const timer = setInterval(() => {
-    w.textContent = pool[Math.floor(Math.random() * pool.length)] || "؟";
-  }, 90);
-
-  try {
-    const [res] = await Promise.all([
-      FB.runTransaction(root, d => {
-        if (!d) return;
-        const p = d.pool || [];
-        const done = d.done || {};
-        const g = d.g || {};
-
-        if (done[me]) return;
-
-        const rest = (d.names || []).filter(n => !done[n] && n !== me);
-        const opts = p.filter(v =>
-          allowed(me, v, g) &&
-          matchable(rest, p.filter(x => x !== v), g)
-        );
-
-        if (!opts.length) return;
-
-        const pick = opts[Math.floor(Math.random() * opts.length)];
-
-        return {
-          ...d,
-          pool: p.filter(n => n !== pick),
-          done: {...done, [me]: true},
-          results: {...(d.results || {}), [me]: pick}
-        };
-      }),
-      new Promise(resolve => setTimeout(resolve, 2500))
-    ]);
-
-    clearInterval(timer);
-
-    if (res.committed) {
-      data = res.snapshot.val();
-      party();
-    } else {
-      w.className = "";
-      w.textContent = "؟";
-      $("msg").textContent =
-        (data.done || {})[me]
-          ? "انت لفيت قبل كده 😉"
-          : "مقدرناش نسحب لك اسم. كلم الأدمن.";
-    }
-  } catch (e) {
-    clearInterval(timer);
-    console.error(e);
-    w.className = "";
-    w.textContent = "؟";
-    $("msg").textContent = "حصل خطأ في الاتصال، جرب تاني.";
-  }
-
-  busy = false;
-  render();
-};
-
-// ====== الأدمن ======
-
-$("adminBtn").onclick = () => {
-  $("agate").hidden = !$("agate").hidden;
-  if (!$("agate").hidden) $("apass").focus();
-};
-
-$("aopen").onclick = () => {
-  if ($("apass").value === ADMIN_PASS) {
-    $("agate").hidden = true;
-    $("admin").hidden = false;
-
-    const names = data.names || [];
-    const g = data.g || {};
-
-    $("boys").value = names.filter(n => g[n] === "b").join("\n");
-    $("girls").value = names.filter(n => g[n] === "g").join("\n");
-
-    $("gmsg").textContent = "";
-    showCodes();
-    render();
-  } else {
-    $("gmsg").textContent = "الباسورد غلط ❌";
-  }
-};
-
-$("apass").onkeydown = e => {
-  if (e.key === "Enter") $("aopen").click();
-};
-
-function showCodes() {
-  const c = getCodes();
-  const box = $("codes");
-
-  if (!c || c.round !== data.round) {
-    box.innerHTML =
-      '<div class="msg">الأكواد مش محفوظة على الجهاز ده. اضغط "كود جديد للكل" عشان تطلعها.</div>';
-    return;
-  }
-
-  const base = location.origin + location.pathname;
-
-  box.innerHTML = (data.names || []).map((n, i) => {
-    const code = c.codes[n] || "";
-    const message =
-      `أهلاً يا ${n} 🎄\n` +
-      `كودك السري في Secret Santa: ${code}\n` +
-      `أو افتح اللينك ده: ${base}?c=${code}\n` +
-      "🤫 متقولش الكود لحد";
-
-    return `
-      <div class="crow">
-        <b>${esc(n)}</b>
-        <code>${esc(code)}</code>
-        <a href="https://wa.me/?text=${encodeURIComponent(message)}"
-           target="_blank" rel="noopener">واتساب</a>
-        <button type="button" data-i="${i}">نسخ</button>
-      </div>`;
-  }).join("");
-
-  box.querySelectorAll("button[data-i]").forEach(b => {
-    b.onclick = async () => {
-      const n = data.names[Number(b.dataset.i)];
-      const code = c.codes[n];
-      const text = `${n}: ${code}\n${base}?c=${code}`;
-
-      try {
-        await navigator.clipboard.writeText(text);
-        b.textContent = "✓ تم النسخ";
-      } catch {
-        b.textContent = "انسخ يدويًا";
-      }
-    };
-  });
-}
-
-// ====== حفظ الأسماء وبدء جولة جديدة ======
-
-$("save").onclick = async () => {
-  if (!ready) {
-    $("amsg").textContent = noNet();
-    return;
-  }
-
-  const boys = $("boys").value.split("\n")
-    .map(n => n.trim()).filter(Boolean);
-
-  const girls = $("girls").value.split("\n")
-    .map(n => n.trim()).filter(Boolean);
-
-  const names = [...boys, ...girls];
-
-  if (names.length < 2) {
-    $("amsg").textContent = "لازم تدخل اسمين على الأقل.";
-    return;
-  }
-
-  if (new Set(names).size !== names.length) {
-    $("amsg").textContent = "فيه أسماء مكررة، راجع القائمة.";
-    return;
-  }
-
-  const g = {};
-  boys.forEach(n => g[n] = "b");
-  girls.forEach(n => g[n] = "g");
-
-  if (!matchable(names, names, g)) {
-    $("amsg").textContent =
-      "التوزيع مش ممكن بالقواعد الحالية. راجع عدد الولاد والبنات.";
-    return;
-  }
-
-  if (!confirm("بدء جولة جديدة؟ سيتم مسح السحوبات القديمة.")) return;
-
-  const btn = $("save");
-  btn.disabled = true;
-  $("amsg").textContent = "جاري الحفظ وتجهيز الأكواد...";
-
-  try {
-    const {codes, h} = await makeCodes(names);
-    const round = Date.now();
-
-    const next = {
-      round,
-      names,
-      g,
-      pool: [...names],
-      done: {},
-      results: {},
-      h
-    };
-
-    await FB.set(root, next);
-
-    localStorage.setItem("santa_codes", JSON.stringify({
-      round,
-      codes
-    }));
-
-    data = next;
-    render();
-    showCodes();
-
-    $("amsg").textContent = "تم الحفظ بنجاح! 🎉";
-    party();
-  } catch (e) {
-    console.error(e);
-    $("amsg").textContent = "فشل الحفظ. راجع اتصال Firebase.";
-  } finally {
-    btn.disabled = false;
-  }
-};
-
-// ====== إنشاء أكواد جديدة دون مسح السحوبات ======
-
-$("regen").onclick = async () => {
-  if (!ready) {
-    $("amsg").textContent = noNet();
-    return;
-  }
-
-  const names = data.names || [];
-
-  if (!names.length) {
-    $("amsg").textContent = "احفظ الأسماء الأول.";
-    return;
-  }
-
-  if (!confirm("إنشاء أكواد جديدة لكل المشاركين؟")) return;
-
-  const btn = $("regen");
-  btn.disabled = true;
-  $("amsg").textContent = "جاري إنشاء الأكواد...";
-
-  try {
-    const {codes, h} = await makeCodes(names);
-
-    await FB.set(FB.ref(db, "santa/h"), h);
-
-    localStorage.setItem("santa_codes", JSON.stringify({
-      round: data.round,
-      codes
-    }));
-
-    data.h = h;
-    render();
-    showCodes();
-
-    $("amsg").textContent = "تم إنشاء الأكواد الجديدة بنجاح! 🎁";
-  } catch (e) {
-    console.error(e);
-    $("amsg").textContent = "حصل خطأ أثناء إنشاء الأكواد.";
-  } finally {
-    btn.disabled = false;
-  }
-};
-
-// ====== تشغيل Firebase ======
-
-async function startFirebase() {
-  try {
-    setNet("⏳ جاري الاتصال بالسيرفر...");
-
-    const appSDK = await import(
-      "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"
-    );
-
-    const dbSDK = await import(
-      "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js"
-    );
-
-    FB = {
-      ...dbSDK,
-      initializeApp: appSDK.initializeApp
-    };
-
-    const app = FB.initializeApp(firebaseConfig);
-    db = FB.getDatabase(app);
-    root = FB.ref(db, "santa");
-
-    FB.onValue(root, snapshot => {
-      data = snapshot.val() || {};
-      ready = true;
-      failed = false;
-      setNet("");
-      render();
-
-      if (urlCode && !getSession()) {
-        login(urlCode);
-      }
-    }, error => {
-      console.error(error);
-      ready = false;
-      failed = true;
-      setNet("⚠️ تعذر الاتصال بقاعدة البيانات: " + error.message);
-      render();
-    }); 
-
-  } catch (e) {
-    console.error(e);
-    ready = false;
-    failed = true;
-    setNet("⚠️ فشل تحميل Firebase: " + (e.message || e));
-    render();
-  }
-}
-
-startFirebase();
-
-</script>
-</body>
-</html>
+  $("status").innerHTML = names.map(n => `<span cl
