@@ -126,6 +126,13 @@ button:disabled{opacity:.45;cursor:not-allowed}
   </section>
 </main>
 
+<script>
+window.addEventListener("error", function (e) {
+  var n = document.getElementById("net"); if (!n) return;
+  n.textContent = "⚠️ خطأ في الصفحة: " + (e.message || "") + (e.lineno ? " (سطر " + e.lineno + ")" : "") + "\nلو الأزرار مش شغالة ابعتلي الرسالة دي.";
+  n.hidden = false;
+});
+</script>
 <!-- سكريبت واحد عادي (مش module): الأزرار شغالة حتى لو Firebase ماتحملش -->
 <script>
 // ====== عدّل هنا ======
@@ -217,8 +224,8 @@ addEventListener("pointerdown", e => { if (!on && !e.target.closest("#music")) t
 let data = {}, busy = false, ready = false, failed = false, FB = null, db = null, root = null;
 const urlCode = new URLSearchParams(location.search).get("c");
 if (urlCode) $("code").value = urlCode;
-const getSession = () => { try { return JSON.parse(localStorage.getItem("santa_me") || "null"); } catch { return null; } };
-const getCodes = () => { try { return JSON.parse(localStorage.getItem("santa_codes") || "null"); } catch { return null; } };
+const getSession = () => { try { return JSON.parse(localStorage.getItem("santa_me") || "null"); } catch (e) { return null; } };
+const getCodes = () => { try { return JSON.parse(localStorage.getItem("santa_codes") || "null"); } catch (e) { return null; } };
 const noNet = () => failed ? "مفيش اتصال بالسيرفر دلوقتي ⚠️ (شوف الرسالة الحمرا فوق)" : "لسه بتّصل بالسيرفر.. جرب تاني بعد ثانية ⏳";
 
 // ====== الأكواد ======
@@ -260,7 +267,7 @@ const sha = async t => {
       const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(t));
       return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join("");
     }
-  } catch {}
+  } catch (e) {}
   return sha256js(t);
 };
 const ALPHA = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
@@ -322,12 +329,4 @@ function render() {
     if (!busy) {
       if (res) {
         $("wheel").className = "win";
-        $("wheel").textContent = res;
-        $("msg").textContent = `يا ${s.me}، هديتك لـ ${res} 🤫 متقولش لحد!`;
-      } else {
-        $("wheel").className = ""; $("wheel").textContent = "؟"; $("msg").textContent = "";
-      }
-    }
-    $("spin").disabled = busy || !ready || !!done[s.me];
-  }
-  $("status").innerHTML = names.map(n => `<span cl
+        $("wheel").textContent = re
